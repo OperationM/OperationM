@@ -45,7 +45,7 @@ group :test do
   gem 'rspec-rails', '2.7.0'
   gem 'capybara', '1.1.2'
   gem 'rb-fsevent', '0.4.3.1', :require => false
-  gem 'growl', '1.0.3'
+  gem 'ruby_gntp'
   gem 'guard-spork', '0.3.2'
   gem 'spork', '~> 0.9.0.rc'
 end
