@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MoogleApp</title>
-  <%= stylesheet_link_tag    "application" %>
+  <title><%= full_title(yield(:title)) %></title>
+  <%= render 'layouts/stylesheets' %>
   <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+	<div class="container">
+		<%= render 'layouts/nav' %>
+		<%= render 'layouts/header' %>
+		<%= render 'layouts/contents' %>
+		<%= render 'layouts/footer' %>
+	</div>
 </body>
 </html>
