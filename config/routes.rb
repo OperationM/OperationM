@@ -6,6 +6,9 @@ MoogleApp::Application.routes.draw do
 
   root to: 'static_pages#home'
 
+  match "/auth/:provider/callback" => "sessions#callback"
+  match "/logout" => "sessions#destroy", :as => :logout
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
