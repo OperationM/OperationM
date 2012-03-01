@@ -11,7 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120229140437) do
+ActiveRecord::Schema.define(:version => 20120301095314) do
+
+  create_table "movies", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "omniusers", :force => true do |t|
     t.string   "provider"

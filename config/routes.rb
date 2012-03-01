@@ -1,5 +1,7 @@
 MoogleApp::Application.routes.draw do
 
+  resources :movies
+
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
   match '/help', to: 'static_pages#help'
