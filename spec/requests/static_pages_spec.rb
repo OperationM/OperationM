@@ -4,7 +4,7 @@ require 'spec_helper'
 describe "StaticPages" do
 	#　対象
 	subject{ page }
-	
+
 	# ナビゲーションのHTMLテスト
 	describe "nav" do
 		# root_pathに遷移
@@ -18,7 +18,7 @@ describe "StaticPages" do
 	end
 
 	# ログイン、ログアウト時の表示
-	describe "Auth" do 
+	describe "auth" do 
 		before do
 			# テストモードON
 			OmniAuth.config.test_mode = true
