@@ -11,11 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120301095314) do
+ActiveRecord::Schema.define(:version => 20120304104721) do
 
   create_table "movies", :force => true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "video"
+    t.string   "title"
+    t.string   "description"
+    t.string   "source"
+    t.string   "length"
+    t.string   "picture"
+    t.string   "meta"
   end
 
   create_table "omniusers", :force => true do |t|
@@ -25,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20120301095314) do
     t.string   "screen_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "access_token"
   end
 
 end

@@ -1,8 +1,7 @@
-<%= form_for(@movie) do |f| %>
+<%= form_for(@movie, html: {multipart: true}) do |f| %>
   <% if @movie.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
-
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
       <ul>
       <% @movie.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -11,7 +10,32 @@
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="field">
+    <%= f.label :title %><br />
+    <%= f.text_field :title %>
   </div>
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_field :description %>
+  </div>
+
+  <% if !@movie.source %>
+    <div class="field">
+      <%= f.label :movie %><br />
+      <%= file_field "file", "upload" %>
+    </div>
+    <div class="field">
+      <%= f.hidden_field :video%>
+    </div>
+    <div id="file_name"></div>
+    <div id="file_size"></div>
+    <div id="file_type"></div>
+    <div class="row">
+      <input id="start_upload" type="button" value="Upload" />
+    </div>
+    <div id="progress_number"></div>
+  <% else %>
+    <%= f.submit "Updata" %>
+  <% end %>
+  
 <% end %>

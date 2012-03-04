@@ -1,5 +1,8 @@
 <p id="notice"><%= notice %></p>
-
-
+<object width="720" height="480" >
+	<param name="allowfullscreen" value="true" />
+	<param name="movie" value="<%= @movie.source %>" />
+	<embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
+</object>
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
 <%= link_to 'Back', movies_path %>

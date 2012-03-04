@@ -1,21 +1,25 @@
 <h1>Listing movies</h1>
-
+<%= link_to 'New Movie', new_movie_path %>
 <table>
   <tr>
-    <th></th>
     <th></th>
     <th></th>
   </tr>
 
 <% @movies.each do |movie| %>
-  <tr>
-    <td><%= link_to 'Show', movie %></td>
-    <td><%= link_to 'Edit', edit_movie_path(movie) %></td>
-    <td><%= link_to 'Destroy', movie, confirm: 'Are you sure?', method: :delete %></td>
-  </tr>
+  <% if movie.source %>
+    <tr>
+      <td>
+        <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
+      </td>
+      <td>
+        <div><%= movie.title %>(<%= movie.length %>)</div>
+        <div><%= movie.description %></div>
+        <div><%= link_to 'Edit', edit_movie_path(movie) %> <%= link_to 'Destroy', movie, confirm: 'Are you sure?', method: :delete %></div>
+      </td>
+    </tr>
+  <% end %>
 <% end %>
+
 </table>
-
 <br />
-
-<%= link_to 'New Movie', new_movie_path %>
