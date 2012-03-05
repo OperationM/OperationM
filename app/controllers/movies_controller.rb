@@ -9,15 +9,16 @@ class MoviesController < ApplicationController
   # GET /movies
   # GET /movies.json
   def index
-    @movies = Movie.all
     ###### feed更新時のpush通知に対応までの暫定対処(FeedFetch版)
     ###### 問題点１：index.html.erbロード時にfetchするので表示が遅くなる
     ###### 問題点２：feedの内容は一回ですべて取得できない(ページングがある)ので投稿だけすすんでだれもロードしなかった時更新が漏れる
     # source(ビデオのURL)が設定されてないオブジェクトを取得
     not_yet = Movie.find_all_by_source(nil)
+    logger.debug "not_yet: #{not_yet}"
     # 空じゃなかったらFBに更新されているか探しにいく
-    if !not_yet
+    if !not_yet.empty?
       # HTTPSリクエスト用のオブジェクト用意
+      require 'net/https'
       https = Net::HTTP.new("graph.facebook.com", 443)
       https.use_ssl = true
       # Herokuにあげる時はこれはいらないはず
@@ -28,8 +29,10 @@ class MoviesController < ApplicationController
       https.start do |w|
         # Operation_M_testグループのfeedを取得
         response = w.get("/387659801250930/feed?fields=id,object_id,picture,source,properties&access_token=#{current_user.access_token}")
+        logger.debug "resonse: #{response}"
         # feedから投稿完了時に返ってきたobject_idとひもづく投稿idを取得して対応をハッシュに保持
         feed = JSON.parse(response.body)
+        logger.debug "feed: #{feed}"
         video_meta_id = Hash.new
         feed.each do |rk, rh|
           if rk == "data"
@@ -65,6 +68,8 @@ class MoviesController < ApplicationController
       end
     end
     ##### 以上が暫定対処
+
+    @movies = Movie.all
 
     respond_to do |format|
       format.html # index.html.erb
