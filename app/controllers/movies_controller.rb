@@ -1,17 +1,22 @@
 class MoviesController < ApplicationController
+  before_filter :authenticate
+
+  # ログインチェック
+  def authenticate
+    redirect_to root_url, :notice => "Please log in." unless current_user
+  end
+
   # GET /movies
   # GET /movies.json
   def index
     @movies = Movie.all
-    current_user = Omniuser.find(session[:user_id])
-
     ###### feed更新時のpush通知に対応までの暫定対処(FeedFetch版)
     ###### 問題点１：index.html.erbロード時にfetchするので表示が遅くなる
     ###### 問題点２：feedの内容は一回ですべて取得できない(ページングがある)ので投稿だけすすんでだれもロードしなかった時更新が漏れる
     # source(ビデオのURL)が設定されてないオブジェクトを取得
-    @not_yet = Movie.find_all_by_source(nil)
+    not_yet = Movie.find_all_by_source(nil)
     # 空じゃなかったらFBに更新されているか探しにいく
-    if !@not_yet
+    if !not_yet
       # HTTPSリクエスト用のオブジェクト用意
       https = Net::HTTP.new("graph.facebook.com", 443)
       https.use_ssl = true
@@ -38,7 +43,7 @@ class MoviesController < ApplicationController
         # development.logに対応表を出力
         logger.debug "video_meta_id: #{video_meta_id}"
         # sourceが設定されていないmovieオブジェクトにfeedからいろいろ設定していく
-        @not_yet.each do |movie|
+        not_yet.each do |movie|
           if video_meta_id.has_key?(movie.video)
             response = w.get("/#{video_meta_id[movie.video]}?access_token=#{current_user.access_token}")
             video_info = JSON.parse(response.body)
@@ -83,7 +88,6 @@ class MoviesController < ApplicationController
   def new
     @movie = Movie.new
     # fbにajaxでpostするのでaccess_tokenを渡してやる必要がある
-    current_user = Omniuser.find(session[:user_id])
     # gonはjsに変数を渡せる便利gem。下記の場合js側で使う時もgon.tokenでOK
     gon.token = current_user.access_token
 

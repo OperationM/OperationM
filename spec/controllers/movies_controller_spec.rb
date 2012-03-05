@@ -20,6 +20,36 @@ require 'spec_helper'
 
 describe MoviesController do
 
+  before do
+    # テストモードON
+    OmniAuth.config.test_mode = true
+    # テスト用ユーザー
+    @current_user = Omniuser.create(
+      :uid => 12234,
+      :provider => "facebook",
+      :screen_name => "NickName",
+      :name => "FirstName LastName"
+    )
+    # モック作成
+    OmniAuth.config.mock_auth[:facebook] = {
+      "uid" => @current_user.uid,
+      "provider" => @current_user.provider,
+      "info" => {
+        "nickname" => @current_user.screen_name,
+        "name" => @current_user.name,
+      }
+    }
+
+    @request.session = ActionController::TestSession.new
+    @request.session[:user_id] = 1
+  end
+
+  after do
+    # テストモードOFF
+    OmniAuth.config.test_mode = false
+  end
+
+
   # This should return the minimal set of attributes required to create a valid
   # Movie. As you add validations to Movie, be sure to
   # update the return value of this method accordingly.
