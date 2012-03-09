@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
     not_yet = Movie.find_all_by_source(nil)
     logger.debug "not_yet: #{not_yet}"
     # 空じゃなかったらFBに更新されているか探しにいく
-    if !not_yet.empty?
+    unless not_yet.blank?
       # HTTPSリクエスト用のオブジェクト用意
       require 'net/https'
       https = Net::HTTP.new("graph.facebook.com", 443)
