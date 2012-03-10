@@ -35,21 +35,27 @@ class Omniuser < ActiveRecord::Base
 
   # 管理グループに属しているかチェック
   def self.admin_group(auth)
-  	groups(auth).each do |h|
-  		if h.has_value?("387659801250930")
-  			return true
-  		end
-  	end
+  	g = groups(auth)
+  	unless g.blank?
+	  	g.each do |h|
+	  		if h.has_value?("387659801250930")
+	  			return true
+	  		end
+	  	end
+	  end
   	false
   end
 
   # ミューソグループに属しているかチェック
   def self.member_group(auth)
-  	groups(auth).each do |h|
-  		if h.has_value?("224428787635384")
-  			return true
-  		end
-  	end
+  	g = groups(auth)
+  	unless g.blank?
+	  	g.each do |h|
+	  		if h.has_value?("224428787635384")
+	  			return true
+	  		end
+	  	end
+	  end
   	false
   end
 
@@ -66,9 +72,11 @@ class Omniuser < ActiveRecord::Base
     # リクエスト開始
     g = {}
     https.start do |w|
-    	response = w.get("/#{auth['uid']}/groups&access_token=#{auth['credentials']['token']}")
-      logger.debug "resonse: #{response}"
-      g = JSON.parse(response.body)
+    	if auth.has_key?('credentials')
+	    	response = w.get("/#{auth['uid']}/groups&access_token=#{auth['credentials']['token']}")
+	      logger.debug "resonse: #{response}"
+	      g = JSON.parse(response.body)
+	    end
 	  end
 	  g['data']
   end

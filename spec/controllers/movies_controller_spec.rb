@@ -28,7 +28,9 @@ describe MoviesController do
       :uid => 12234,
       :provider => "facebook",
       :screen_name => "NickName",
-      :name => "FirstName LastName"
+      :name => "FirstName LastName",
+      :admin => true,
+      :member => true,
     )
     # モック作成
     OmniAuth.config.mock_auth[:facebook] = {
