@@ -1,9 +1,9 @@
 class MoviesController < ApplicationController
   before_filter :authenticate
 
-  # ログインチェック
+  # 権限チェック
   def authenticate
-    redirect_to root_url, :notice => "Please log in." unless current_user
+    redirect_to root_url, :notice => "Please log in." unless member?
   end
 
   # GET /movies
