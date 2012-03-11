@@ -1,4 +1,4 @@
-<%= form_tag(:controller => "movies", :action => "create", html: {multipart: true}) do %>
+<%= form_tag({:controller => "movies", :action => "create"}, {:id => "movie_form", :name => "movie_form"}) do %>
   <% if @movie.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -18,35 +18,7 @@
     <%= label_tag "description" %><br />
     <%= text_field_tag "movie[description]", "", :id => "movie_description" %>
   </div>
-  <div class="field">
-    <%= label_tag "tag" %><br />
-    <%= text_field_tag "movie[tag]", "", :id => "movie_tag" %>
-  </div>
-  <div class="field">
-    <%= label_tag "only_regist?" %><br />
-    <%= check_box_tag "movie[only_regist]", "", :id => "movie_only_regist" %>
-  </div>
-  <div class="field">
-    <%= label_tag "graph_object" %><br />
-    <%= text_field_tag "movie[graph_object]", "", :id => "movie_graph_object" %>
-  </div>
-  <% if !@movie.source %>
-    <div class="field">
-      <%= label_tag "attachment" %><br />
-      <%= file_field "file", "upload" %>
-    </div>
-    <div class="field">
-      <%= hidden_field_tag "movie[video]", "", :id => "movie_video" %>
-    </div>
-    <div id="file_name"></div>
-    <div id="file_size"></div>
-    <div id="file_type"></div>
-    <div class="row">
-      <input id="start_upload" type="button" value="Upload" />
-    </div>
-    <div id="progress_number"></div>
-  <% else %>
-    <%= f.submit "Updata" %>
-  <% end %>
-  
+
+  <%= render "video" %>
+
 <% end %>
