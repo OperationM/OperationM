@@ -4,6 +4,14 @@
 $ ->
   $('#tag_form').bind('ajax:complete', completeTagPost)
 
+$ ->
+  $('.tag').liveDraggable()
+
+$.fn.liveDraggable = (opts) ->
+  this.live('mouseover', ->
+    if !$(this).data("init")
+      $(this).data("init", true).draggable(opts))
+
 completeTagPost = (evt, ajax) ->
   res = $.parseJSON(ajax.responseText)
   $('#tags').append(res.html)
