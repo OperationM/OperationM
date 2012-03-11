@@ -1,6 +1,8 @@
 MoogleApp::Application.routes.draw do
 
-  resources :movies
+  resources :movies do 
+    resources :tags, :except => [:edit, :update]
+  end
 
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
