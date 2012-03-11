@@ -1,2 +1,4 @@
-<h1>Tags#index</h1>
-<p>Find me in app/views/tags/index.html.erb</p>
+<% tags = movie.tags %>
+<%= content_tag(:div, :id => "tags") do %>
+  <%= render :partial => "tags/tag", :collection => tags, :locals => {:movie => movie} %>
+<% end %>
