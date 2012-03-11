@@ -1,15 +1,20 @@
 class TagsController < ApplicationController
   before_filter :authenticate_member
+  before_filter :check_ajax, :only => "create, destroy"
 
   # 権限チェック
   def authenticate_member
     redirect_to root_url, :notice => "Required log in as Member." unless member?
   end
 
+  # AJAXのみ対応
+  def check_ajax
+    return redirect_to '/404.html' unless request.xhr?
+  end
+
   # POST   /movies/:movie_id/tags(.:format)
   # tagを作成してmovieに関連付ける
   def create
-    return redirect_to '/404.html' unless request.xhr?
     @movie = Movie.find(params[:movie_id])
     @tag = Tag.new(params[:tag])
     @movie.tags << @tag
@@ -40,18 +45,15 @@ class TagsController < ApplicationController
   # DELETE /movies/:movie_id/tags/:id(.:format)
   # movieからtagの関連を削除する
   def destroy
+    logger.debug "destory"
     movie = Movie.find(params[:movie_id])
     tag = Tag.find(params[:id])
     movie.tags.delete(tag)
 
-    respond_to do |format|
-      if movie.save
-        format.html { redirect_to movie }
-        format.json { head :ok }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @movie.errors, status: :unprocessable_entity }
-      end
+    if movie.save
+      render :json => {:status => :success, :tag_id => params[:id]}
+    else
+      render :json => {:error => movie.errors, status: :unprocessable_entity}
     end
   end
 

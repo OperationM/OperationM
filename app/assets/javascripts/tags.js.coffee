@@ -5,7 +5,16 @@ $ ->
   $('#tag_form').bind('ajax:complete', completeTagPost)
 
 $ ->
-  $('.tag').liveDraggable()
+  $('.tag').liveDraggable({
+    revert: 'invalid',
+  })
+
+$ ->
+  $('#tag_trash').droppable({
+    accept: '.tag',
+    tolerance: 'touch',
+    drop: deleteTag
+  })
 
 $.fn.liveDraggable = (opts) ->
   this.live('mouseover', ->
@@ -17,3 +26,17 @@ completeTagPost = (evt, ajax) ->
   $('#tags').append(res.html)
   $('#tag_name').val('')
 
+deleteTag = (evt, ui) ->
+  tag_id = ui.draggable.attr('id').match(/[0-9]+/i)
+  movie_id = ui.draggable.attr('movie_id').match(/[0-9]+/i)
+  url = "/movies/" + movie_id + "/tags/" + tag_id + ".json"
+  console.log url
+  $.ajax({
+    type: "DELETE",
+    url: url,
+    success: completeDelTag
+  })
+
+completeDelTag = (data, status, xhr) ->
+  tag_id = "#tag_" + data.tag_id
+  $(tag_id).remove()

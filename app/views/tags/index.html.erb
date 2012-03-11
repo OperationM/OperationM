@@ -2,3 +2,4 @@
 <%= content_tag(:div, :id => "tags") do %>
   <%= render :partial => "tags/tag", :collection => tags, :locals => {:movie => movie} %>
 <% end %>
+<%= label_tag "Trash", "---------- Trash Box ----------", :id => "tag_trash" %>
