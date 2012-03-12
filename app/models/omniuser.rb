@@ -36,11 +36,19 @@ class Omniuser < ActiveRecord::Base
   # 管理グループに属しているかチェック
   def self.admin_group(auth)
   	g = groups(auth)
+    # g = owner(auth)
   	unless g.blank?
 	  	g.each do |h|
-	  		if h.has_value?("387659801250930")
-	  			return true
-	  		end
+        if h.has_value?("387659801250930")
+          reuturn true
+        end
+        # if h.has_value?(auth["uid"])
+        #   if h.["administrator"]          
+        #     return true
+        #   else
+        #     return false
+        #   end
+        # end
 	  	end
 	  end
   	false
@@ -51,7 +59,7 @@ class Omniuser < ActiveRecord::Base
   	g = groups(auth)
   	unless g.blank?
 	  	g.each do |h|
-	  		if h.has_value?("224428787635384")
+	  		if h.has_value?("387659801250930")
 	  			return true
 	  		end
 	  	end
@@ -79,5 +87,27 @@ class Omniuser < ActiveRecord::Base
 	    end
 	  end
 	  g['data']
+  end
+
+  # ミューソグループのメンバーをHashで返却
+  def self.owner(auth)
+    # HTTPSリクエスト用のオブジェクト用意
+    require 'net/https'
+    https = Net::HTTP.new("graph.facebook.com", 443)
+    https.use_ssl = true
+    # Herokuにあげる時はこれはいらないはず
+    https.ca_file = "#{$RAILS_ROOT}/cacert.pem"
+    https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    https.verify_depth = 5
+    # リクエスト開始
+    g = {}
+    https.start do |w|
+      if auth.has_key?('credentials')
+        response = w.get("/387659801250930/members&access_token=#{auth['credentials']['token']}")
+        logger.debug "resonse: #{response}"
+        g = JSON.parse(response.body)
+      end
+    end
+    g['data']
   end
 end
