@@ -16,7 +16,10 @@ class TagsController < ApplicationController
   # tagを作成してmovieに関連付ける
   def create
     @movie = Movie.find(params[:movie_id])
-    @tag = Tag.new(params[:tag])
+    @tag = Tag.find_by_name(params[:tag][:name])
+    if @tag.blank?
+      @tag = Tag.new(params[:tag])
+    end
     @movie.tags << @tag
 
     if @tag.save && @movie.save
