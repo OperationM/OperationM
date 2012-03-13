@@ -35,20 +35,20 @@ class Omniuser < ActiveRecord::Base
 
   # 管理グループに属しているかチェック
   def self.admin_group(auth)
-  	g = groups(auth)
-    # g = owner(auth)
+  	# g = groups(auth)
+    g = owner(auth)
   	unless g.blank?
 	  	g.each do |h|
-        if h.has_value?("387659801250930")
-          reuturn true
-        end
-        # if h.has_value?(auth["uid"])
-        #   if h.["administrator"]          
-        #     return true
-        #   else
-        #     return false
-        #   end
+        # if h.has_value?("387659801250930")
+        #   reuturn true
         # end
+        if h.has_value?(auth["uid"])
+          if h["administrator"]          
+            return true
+          else
+            return false
+          end
+        end
 	  	end
 	  end
   	false
