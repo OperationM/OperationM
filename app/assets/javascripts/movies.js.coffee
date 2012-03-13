@@ -10,6 +10,25 @@ $ ->
 $ -> 
   $('#only_sync').live('change', changeVideoField)
 
+$ ->
+  $('#artist').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
+    queryParam: 'term',
+    propertyToSearch: 'artistName',
+    onResult: tokenInputResult,
+    resultsFormatter: formatResults,
+    tokenFormatter: formatToken
+    })
+
+formatResults = (item) ->
+  "<li>" + item.trackName + ": " + item.artistName + "</li>"
+
+formatToken = (item) ->
+  "<li><p>" + item.trackName + ": " + item.artistName + "</p></li>"
+
+tokenInputResult = (results) ->
+  console.log results.results
+  results.results
+
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]
   if file
