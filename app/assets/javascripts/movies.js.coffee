@@ -11,23 +11,47 @@ $ ->
   $('#only_sync').live('change', changeVideoField)
 
 $ ->
-  $('#artist').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
+  $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
     queryParam: 'term',
     propertyToSearch: 'artistName',
-    onResult: tokenInputResult,
-    resultsFormatter: formatResults,
-    tokenFormatter: formatToken
+    onResult: tracksInputResult,
+    resultsFormatter: tracksFormatResults,
+    tokenFormatter: tracksFormatToken,
+    searchDelay: 2000,
+    onAdd: trackAdded,
+    onDelete: trackDeleted
     })
 
-formatResults = (item) ->
-  "<li>" + item.trackName + ": " + item.artistName + "</li>"
+$ ->
+  $('#members').tokenInput('https://graph.facebook.com/387659801250930/members?access_token=' + gon.token, {
+    jsonContainer: "data",
+    })
 
-formatToken = (item) ->
-  "<li><p>" + item.trackName + ": " + item.artistName + "</p></li>"
+trackDeleted = (item) ->
+  console.log item
 
-tokenInputResult = (results) ->
-  console.log results.results
-  results.results
+trackAdded = (item) ->
+  console.log item
+
+tracksFormatResults = (item) ->
+  "<li>" + item.trackName + " - " + item.artistName + " - " + "</li>"
+
+tracksFormatToken = (item) ->
+  "<li><p>" + item.trackName + " - " + item.artistName + " - " + "</p></li>"
+
+tracksInputResult = (res) ->
+  console.log res.results.length
+  if res.results.length == 0
+    input = $('#token-input-tracks').val()
+    console.log input
+    elems = input.split(",")
+    ij = {trackName: elems[0], artistName: elems[1]}
+    res.results.push(ij)
+  console.log res.results
+  res.results
+
+# membersInputResult = (res) ->
+#   res.data
 
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]

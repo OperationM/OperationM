@@ -86,6 +86,8 @@ class MoviesController < ApplicationController
   # GET /movies/1.json
   def show
     @movie = Movie.find(params[:id])
+    
+    gon.token = current_user.access_token
 
     respond_to do |format|
       format.html # show.html.erb

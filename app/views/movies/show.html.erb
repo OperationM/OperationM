@@ -3,10 +3,13 @@
 	<param name="allowfullscreen" value="true" />
 	<param name="movie" value="<%= @movie.source %>" />
 	<embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
-</object>
+</object><br />
+<%= label_tag 'tags' %>
 <%= render :file => 'tags/index', :locals => {:movie => @movie} %>
 <%= render :file => 'tags/new', :locals => {:movie => @movie} %>
+<%= label_tag 'Members' %>
+<input name="members" id="members" value="" type="text" /></br>
 <%= label_tag 'Tracks' %>
-<input name="artist" id="artist" value="" type="text" /><br/>
+<input name="tracks" id="tracks" value="" type="text" /><br/>
 <%= link_to 'Edit', edit_movie_path(@movie) %> |
 <%= link_to 'Back', movies_path %>
