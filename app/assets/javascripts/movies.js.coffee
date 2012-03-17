@@ -11,6 +11,17 @@ $ ->
   $('#only_sync').live('change', changeVideoField)
 
 $ ->
+  $('#tags').tokenInput('/tags.json', {
+    crossDomain: false,
+    newTokenConfirmed: tagNew,
+    onAdd: tagAdd,
+    onDelete: tagDeleted,
+    newTokenAllow: true,
+    confirmNewTokenText: "Add it?",
+    prePopulate: $('#tags_tokens').data('pre')
+    })
+
+$ ->
   $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
     queryParam: 'term',
     propertyToSearch: 'artistName',
@@ -27,6 +38,43 @@ $ ->
     jsonContainer: "data",
     })
 
+tagNew = (value) ->
+  console.log "Begin remote add: "+value
+  $.ajax({
+    type: "POST",
+    url: "/tags.json",
+    data: "name="+value,
+    success: completeRemoteAddTag
+    })
+
+completeRemoteAddTag = (res) ->
+  console.log "Complete remote add: "+res.id
+  $('#tags').tokenInput('add', {id: res.id, name: res.name})
+
+tagAdd = (item) ->
+  console.log "Begin update relation: movie="+gon.movie_id+" tag="+item.id
+  $.ajax({
+    type: "PUT",
+    url: "/tags/"+item.id+".json",
+    data: "movie=" + gon.movie_id,
+    success: completeRemoteEditTag
+    })
+
+completeRemoteEditTag = (res) ->
+  console.log "Complete update relation: tag="+res.id
+
+tagDeleted = (item) ->
+  console.log "Begin delete relation: movie="+gon.movie_id+" tag="+item.id
+  $.ajax({
+    type: "DELETE",
+    url: "/tags/"+item.id+".json",
+    data: "movie="+gon.movie_id+"&name="+item.name+"&uuid="+item.uuid,
+    success: completeRemoteDeleteTag
+    })
+
+completeRemoteDeleteTag = (res) ->
+  console.log "Complete delete relation: tag="+res.id
+
 trackDeleted = (item) ->
   console.log item
 
@@ -40,7 +88,6 @@ tracksFormatToken = (item) ->
   "<li><p>" + item.trackName + " - " + item.artistName + " - " + "</p></li>"
 
 tracksInputResult = (res) ->
-  console.log res.results.length
   if res.results.length == 0
     input = $('#token-input-tracks').val()
     console.log input
@@ -49,9 +96,6 @@ tracksInputResult = (res) ->
     res.results.push(ij)
   console.log res.results
   res.results
-
-# membersInputResult = (res) ->
-#   res.data
 
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]

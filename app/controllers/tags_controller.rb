@@ -12,26 +12,42 @@ class TagsController < ApplicationController
     return redirect_to '/404.html' unless request.xhr?
   end
 
-  # POST   /movies/:movie_id/tags(.:format)
-  # tagを作成してmovieに関連付ける
-  def create
-    @movie = Movie.find(params[:movie_id])
-    @tag = Tag.find_by_name(params[:tag][:name])
-    if @tag.blank?
-      @tag = Tag.new(params[:tag])
-    end
-    @movie.tags << @tag
-
-    if @tag.save && @movie.save
-      html = render_to_string :partial => "tag", :collection => [@tag]
-      render :json => {:status => :success, :html => html}
-      logger.debug html
-    else
-      render :json => {:error => @tag.errors, status: :unprocessable_entity}
-      logger.debug "#{@tag.errors}"
+  def index
+    @tags = Tag.where("name like ?", "%#{params[:q]}%")
+    respond_to do |format|
+      format.html
+      format.json {render :json => @tags.map(&:attributes)}
     end
   end
 
+  # POST   /movies/:movie_id/tags(.:format)
+  # tagを作成してmovieに関連付ける
+  def create
+    @tag = Tag.new(:name => params[:name])
+
+    if @tag.save
+      respond_to do |format|
+        format.html
+        format.json {render :json => @tag}
+      end
+    else
+      render :json => {:error => @tag.errors, status: :unprocessable_entity}
+    end
+  end
+
+  def update
+    @movie = Movie.find(params[:movie])
+    @tag = Tag.find(params[:id])
+    @movie.tags << @tag
+    if @tag.save && @movie.save
+      respond_to do |format|
+        format.html
+        format.json {render :json => @tag}
+      end
+    else
+      render :json => {:error => @tag.errors, status: :unprocessable_entity}
+    end
+  end
   # GET /movies/:movie_id/tags/:id(.:format)
   # movie_tag
   # tagに関連付いているmoviesを返す
@@ -48,13 +64,15 @@ class TagsController < ApplicationController
   # DELETE /movies/:movie_id/tags/:id(.:format)
   # movieからtagの関連を削除する
   def destroy
-    logger.debug "destory"
-    movie = Movie.find(params[:movie_id])
+    movie = Movie.find(params[:movie])
     tag = Tag.find(params[:id])
     movie.tags.delete(tag)
 
     if movie.save
-      render :json => {:status => :success, :tag_id => params[:id]}
+      respond_to do |format|
+        format.html
+        format.json {render :json => tag}
+      end
     else
       render :json => {:error => movie.errors, status: :unprocessable_entity}
     end

@@ -20,6 +20,11 @@ var DEFAULT_SETTINGS = {
     propertyToSearch: "name",
     jsonContainer: null,
 
+    // New token settings
+    newTokenAllow: false,
+    confirmNewTokenText: "Add it?",
+    newTokenConfirmed: null,
+
 	// Display settings
     hintText: "Type in a search term",
     noResultsText: "No results",
@@ -64,7 +69,8 @@ var DEFAULT_CLASSES = {
     dropdownItem: "token-input-dropdown-item",
     dropdownItem2: "token-input-dropdown-item2",
     selectedDropdownItem: "token-input-selected-dropdown-item",
-    inputToken: "token-input-input-token"
+    inputToken: "token-input-input-token",
+    newToken: "token-input-new-token"
 };
 
 // Input box position "enum"
@@ -196,7 +202,8 @@ $.TokenList = function (input, url_or_data, settings) {
             }
         })
         .blur(function () {
-            hide_dropdown();
+            setTimeout(function() { hide_dropdown(); }, 400);
+            $(this).data('tag', $(this).val());
             $(this).val("");
         })
         .bind("keyup keydown blur update", resize_input)
@@ -360,6 +367,18 @@ $.TokenList = function (input, url_or_data, settings) {
             letterSpacing: input_box.css("letterSpacing"),
             whiteSpace: "nowrap"
         });
+
+    // Bind new token link
+    if(settings.newTokenAllow) {
+        $('.'+settings.classes.newToken).live('click', function(e){
+            e.preventDefault();
+            var value = input_token.find('input:first').data('tag');
+            var callback = settings.newTokenConfirmed;
+            if($.isFunction(callback)) {
+                callback.call(hidden_input,value);
+            }            
+        });
+    }
 
     // Pre-populate list if items exist
     hidden_input.val("");
@@ -706,7 +725,11 @@ $.TokenList = function (input, url_or_data, settings) {
             }
         } else {
             if(settings.noResultsText) {
-                dropdown.html("<p>"+settings.noResultsText+"</p>");
+                if(settings.newTokenAllow) {
+                    dropdown.html('<p>'+settings.noResultsText+' <a href="" class="'+settings.classes.newToken+'">'+settings.confirmNewTokenText+'</a></p>');
+                }else{
+                    dropdown.html("<p>"+settings.noResultsText+"</p>");
+                }
                 show_dropdown();
             }
         }
