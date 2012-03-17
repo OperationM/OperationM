@@ -27,7 +27,7 @@ var DEFAULT_SETTINGS = {
 
 	// Display settings
     hintText: "Type in a search term",
-    noResultsText: "No results",
+    noResultsText: "No results.",
     searchingText: "Searching...",
     deleteText: "&times;",
     animateDropdown: true,
@@ -50,6 +50,7 @@ var DEFAULT_SETTINGS = {
 	// Formatters
     resultsFormatter: function(item){ return "<li>" + item[this.propertyToSearch]+ "</li>" },
     tokenFormatter: function(item) { return "<li><p>" + item[this.propertyToSearch] + "</p></li>" },
+    noresultsFormatter: function(item){ return "<li>" + this.noResultsText + " " + this.confirmNewTokenText + "</li>" },
 
 	// Callbacks
     onResult: null,
@@ -274,7 +275,11 @@ $.TokenList = function (input, url_or_data, settings) {
                 case KEY.ENTER:
                 case KEY.NUMPAD_ENTER:
                 case KEY.COMMA:
-                  if(selected_dropdown_item) {
+                  if($(selected_dropdown_item).hasClass(settings.classes.newToken)) {
+                    new_token($(selected_dropdown_item).data("tokeninput"));
+                    hidden_input.change();
+                    return false;
+                  }else{
                     add_token($(selected_dropdown_item).data("tokeninput"));
                     hidden_input.change();
                     return false;
@@ -367,18 +372,6 @@ $.TokenList = function (input, url_or_data, settings) {
             letterSpacing: input_box.css("letterSpacing"),
             whiteSpace: "nowrap"
         });
-
-    // Bind new token link
-    if(settings.newTokenAllow) {
-        $('.'+settings.classes.newToken).live('click', function(e){
-            e.preventDefault();
-            var value = input_token.find('input:first').data('tag');
-            var callback = settings.newTokenConfirmed;
-            if($.isFunction(callback)) {
-                callback.call(hidden_input,value);
-            }            
-        });
-    }
 
     // Pre-populate list if items exist
     hidden_input.val("");
@@ -502,6 +495,20 @@ $.TokenList = function (input, url_or_data, settings) {
         }
 
         return this_token;
+    }
+
+    function new_token (item) {
+        var callback = settings.newTokenConfirmed;
+        // Clear input box
+        input_box.val("");
+
+        // Don't show the help dropdown, they've got the idea
+        hide_dropdown();
+
+        // Execute the newTokenConfirmed callback if defined
+        if($.isFunction(callback)) {
+            callback.call(hidden_input,item);
+        }
     }
 
     // Add a token to the token list based on user input
@@ -724,13 +731,28 @@ $.TokenList = function (input, url_or_data, settings) {
                 dropdown_ul.show();
             }
         } else {
-            if(settings.noResultsText) {
-                if(settings.newTokenAllow) {
-                    dropdown.html('<p>'+settings.noResultsText+' <a href="" class="'+settings.classes.newToken+'">'+settings.confirmNewTokenText+'</a></p>');
-                }else{
-                    dropdown.html("<p>"+settings.noResultsText+"</p>");
-                }
-                show_dropdown();
+            dropdown.empty();
+            var dropdown_ul = $("<ul>")
+                .appendTo(dropdown)
+                .mouseover(function (event) {
+                    select_dropdown_item($(event.target).closest("li"));
+                })
+                .mousedown(function (event) {
+                    new_token($(event.target).closest("li").data("tokeninput"));
+                    hidden_input.change();
+                    return false;
+                })
+                .hide();
+            var this_li = settings.noresultsFormatter();
+            this_li = $(this_li).appendTo(dropdown_ul);
+            this_li.addClass(settings.classes.newToken);
+            select_dropdown_item(this_li);
+            $.data(this_li.get(0), "tokeninput", input_box.val());
+            show_dropdown();
+            if(settings.animateDropdown) {
+                dropdown_ul.slideDown("fast");
+            } else {
+                dropdown_ul.show();
             }
         }
     }

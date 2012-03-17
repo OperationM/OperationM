@@ -1,4 +1,4 @@
-class TagsController < ApplicationController
+class TracksController < ApplicationController
   before_filter :authenticate_member
   before_filter :check_ajax, :only => "create, destroy, update"
 
@@ -12,26 +12,43 @@ class TagsController < ApplicationController
     return redirect_to '/404.html' unless request.xhr?
   end
 
-  def index
-    @tags = Tag.where("name like ?", "%#{params[:q]}%")
-    respond_to do |format|
-      format.html
-      format.json {render :json => @tags.map(&:attributes)}
-    end
-  end
-
-  # POST   /movies/:movie_id/tags(.:format)
-  # tagを作成してmovieに関連付ける
   def create
-    @tag = Tag.new(:name => params[:name])
+    if params.has_key?("movie")
+      logger.debug "update relation"
+      @artist = Artist.find_by_id(params[:artist_id])
+      if @artist.blank?
+        @artist = Artist.create_with_id(params[:artist_id])
+        @artist.name = params[:artist]
+      end
+      @track = @artist.tracks.find_by_id(params[:track_id])
+      if @track.blank?
+        @track = Track.create_with_id(params[:track_id])
+        @track.name = params[:track]
+        @track.art_work_url_30 = params[:art_work_url_30]
+        @artist.tracks << @track
+      end
+      @movie = Movie.find(params[:movie])
+      @movie.tracks << @track
+      @movie.save
+    else
+      logger.debug "new track"
+      @artist = Artist.find_by_name(params[:artist]) || Artist.new(:name => params[:artist])
+      @track = @artist.tracks.find_by_name(params[:track])
+      if @track.blank?
+        @track = Track.new
+        @track.name = params[:track]
+        @track.art_work_url_30 = params[:art_work_url_30]
+        @artist.tracks << @track
+      end
+    end
 
-    if @tag.save
+    if @track.save && @artist.save
       respond_to do |format|
         format.html
-        format.json {render :json => @tag}
+        format.json {render :json => @track.to_json(:include => [:artist])}
       end
     else
-      render :json => {:error => @tag.errors, status: :unprocessable_entity}
+      render :json => {:error => @track.errors, status: :unprocessable_entity}
     end
   end
 
@@ -65,17 +82,16 @@ class TagsController < ApplicationController
   # movieからtagの関連を削除する
   def destroy
     movie = Movie.find(params[:movie])
-    tag = Tag.find(params[:id])
-    movie.tags.delete(tag)
+    track = Track.find(params[:id])
+    movie.tracks.delete(track)
 
     if movie.save
       respond_to do |format|
         format.html
-        format.json {render :json => tag}
+        format.json {render :json => track}
       end
     else
       render :json => {:error => movie.errors, status: :unprocessable_entity}
     end
   end
-
 end

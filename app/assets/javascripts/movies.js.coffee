@@ -25,21 +25,55 @@ $ ->
   $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
     queryParam: 'term',
     propertyToSearch: 'artistName',
-    onResult: tracksInputResult,
+    newTokenConfirmed: trackNew,
+    onAdd: trackAdd,
+    onDelete: trackDeleted,
+    newTokenAllow: true,
+    confirmNewTokenText: "Add it?",
+    prePopulate: $('#tracks_tokens').data('pre'),
+    onResult: tracksResults,
     resultsFormatter: tracksFormatResults,
     tokenFormatter: tracksFormatToken,
-    searchDelay: 2000,
-    onAdd: trackAdded,
-    onDelete: trackDeleted
+    searchDelay: 2000
     })
 
 $ ->
   $('#members').tokenInput('https://graph.facebook.com/387659801250930/members?access_token=' + gon.token, {
-    jsonContainer: "data",
+    jsonContainer: 'data'
+    onAdd: memberAdd,
+    onDelete: memberDelete,
+    newTokenAllow: false,
+    prePopulate: $('#members_tokens').data('pre')
     })
 
+# Member callbacks
+memberAdd = (item) ->
+  console.log "Begin update relation: movie="+gon.movie_id+" member="+item.id
+  $.ajax({
+    type: "POST",
+    url: "/members.json",
+    data: "movie=" + gon.movie_id + "&id=" + item.id + "&name=" + item.name
+    success: completeRemoteEditMember
+    })
+
+completeRemoteEditMember = (res) ->
+  console.log "Complete update relation: member="+res.id
+
+memberDelete = (item) ->
+  console.log "Begin delete relation: movie="+gon.movie_id+" member="+item.id
+  $.ajax({
+    type: "DELETE",
+    url: "/members/"+item.id+".json",
+    data: "movie="+gon.movie_id,
+    success: completeRemoteDeleteMember
+    })
+
+completeRemoteDeleteMember = (res) ->
+  console.log "Complete delete relation: member="+res.id
+
+# Tag callbacks
 tagNew = (value) ->
-  console.log "Begin remote add: "+value
+  console.log "Begin remote add tag: "+value
   $.ajax({
     type: "POST",
     url: "/tags.json",
@@ -68,35 +102,69 @@ tagDeleted = (item) ->
   $.ajax({
     type: "DELETE",
     url: "/tags/"+item.id+".json",
-    data: "movie="+gon.movie_id+"&name="+item.name+"&uuid="+item.uuid,
+    data: "movie="+gon.movie_id,
     success: completeRemoteDeleteTag
     })
 
 completeRemoteDeleteTag = (res) ->
   console.log "Complete delete relation: tag="+res.id
 
+# Track callbacks
+trackNew = (value) ->
+  console.log "Begin remote add track: "+value
+  div = value.split("@")
+  $.ajax({
+    type: "POST",
+    url: "/tracks.json",
+    data: "track="+div[0]+"&artist="+div[1]+"&art_work_url_30="+"/assets/no_art_work.png",
+    success: completeRemoteAddTrack
+    })
+
+completeRemoteAddTrack = (res) ->
+  console.log "Complete remote add: "+res.id
+  $('#tracks').tokenInput('add', {
+    trackId: res.id, 
+    trackName: res.name, 
+    artistId: res.artist.id, 
+    artistName: res.artist.name, 
+    artworkUrl30: res.art_work_url_30
+    })
+
+trackAdd = (item) ->
+  console.log "Begin update relation: movie="+gon.movie_id+" track="+item.trackId
+  $.ajax({
+    type: "POST",
+    url: "/tracks.json",
+    data: "movie="+gon.movie_id+"&track="+item.trackName+"&artist="+item.artistName+"&track_id="+item.trackId+"&artist_id="+item.artistId+"&art_work_url_30="+item.artworkUrl30,
+    success: completeRemoteEditTrack
+    })
+
+completeRemoteEditTrack = (res) ->
+  console.log "Complete update relation: track="+res.id
+
 trackDeleted = (item) ->
-  console.log item
+  console.log "Begin delete relation: movie="+gon.movie_id+" track="+item.trackId
+  $.ajax({
+    type: "DELETE",
+    url: "/tracks/"+item.trackId+".json",
+    data: "movie="+gon.movie_id,
+    success: completeRemoteDeleteTrack
+    })
 
-trackAdded = (item) ->
-  console.log item
+completeRemoteDeleteTrack = (res) ->
+  console.log "Complete delete relation: track="+res.id
 
-tracksFormatResults = (item) ->
-  "<li>" + item.trackName + " - " + item.artistName + " - " + "</li>"
-
-tracksFormatToken = (item) ->
-  "<li><p>" + item.trackName + " - " + item.artistName + " - " + "</p></li>"
-
-tracksInputResult = (res) ->
-  if res.results.length == 0
-    input = $('#token-input-tracks').val()
-    console.log input
-    elems = input.split(",")
-    ij = {trackName: elems[0], artistName: elems[1]}
-    res.results.push(ij)
-  console.log res.results
+tracksResults = (res) ->
   res.results
 
+tracksFormatResults = (item) ->
+  "<li>" + '<img src="'+ item.artworkUrl30 + '"/>&nbsp;' + item.trackName + " - " + item.artistName + " - " + "</li>"
+
+
+tracksFormatToken = (item) ->
+  "<li><p>" + '<img src="'+ item.artworkUrl30 + '"/>&nbsp;' + item.trackName + " - " + item.artistName + " - " + "</p></li>"
+
+# Movie register
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]
   if file

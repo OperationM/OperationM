@@ -2,6 +2,8 @@ MoogleApp::Application.routes.draw do
 
   resources :movies
   resources :tags, :except => [:new, :edit]
+  resources :members, :only => [:show, :create, :destroy]
+  resources :tracks, :only => [:show, :create, :update, :destroy]
 
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
