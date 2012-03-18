@@ -1,6 +1,8 @@
 # Place all the behaviors and hooks related to the matching controller here.
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
+
+# Moogleサーバーで既に登録されているタグを検索する。無かった場合はそのまま追加できるようにする。
 $ ->
   $('#tags').tokenInput('/tags.json', {
     crossDomain: false,
@@ -19,7 +21,9 @@ tagNew = (value) ->
   $.ajax({
     type: "POST",
     url: "/tags.json",
-    data: "name="+value,
+    data: {
+      name: value
+      },
     success: completeRemoteAddTag
     })
 
@@ -29,7 +33,9 @@ tagAdd = (item) ->
   $.ajax({
     type: "PUT",
     url: "/tags/"+item.id+".json",
-    data: "movie=" + gon.movie_id,
+    data: {
+      movie: gon.movie_id
+      },
     success: completeRemoteEditTag
     })
 
@@ -39,7 +45,9 @@ tagDeleted = (item) ->
   $.ajax({
     type: "DELETE",
     url: "/tags/"+item.id+".json",
-    data: "movie="+gon.movie_id,
+    data: {
+      movie: gon.movie_id
+      },
     success: completeRemoteDeleteTag
     })
 

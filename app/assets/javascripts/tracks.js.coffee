@@ -27,7 +27,11 @@ trackNew = (value) ->
   $.ajax({
     type: "POST",
     url: "/tracks.json",
-    data: "track="+div[0]+"&artist="+div[1]+"&art_work_url_30="+"/assets/no_art_work.png",
+    data: {
+      track: div[0]
+      artist: div[1]
+      art_work_url_30: "/assets/no_art_work.png"
+      },
     success: completeRemoteAddTrack
     })
 
@@ -37,7 +41,14 @@ trackAdd = (item) ->
   $.ajax({
     type: "POST",
     url: "/tracks.json",
-    data: "movie="+gon.movie_id+"&track="+item.trackName+"&artist="+item.artistName+"&track_id="+item.trackId+"&artist_id="+item.artistId+"&art_work_url_30="+item.artworkUrl30,
+    data: {
+      movie: gon.movie_id
+      track: item.trackName
+      artist: item.artistName
+      track_id: item.trackId
+      artist_id: item.artistId
+      art_work_url_30: item.artworkUrl30
+      },
     success: completeRemoteEditTrack
     })
 
@@ -47,7 +58,9 @@ trackDeleted = (item) ->
   $.ajax({
     type: "DELETE",
     url: "/tracks/"+item.trackId+".json",
-    data: "movie="+gon.movie_id,
+    data: {
+      movie: gon.movie_id
+      },
     success: completeRemoteDeleteTrack
     })
 

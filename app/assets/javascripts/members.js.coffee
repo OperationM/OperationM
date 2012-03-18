@@ -19,7 +19,11 @@ memberAdd = (item) ->
   $.ajax({
     type: "POST",
     url: "/members.json",
-    data: "movie=" + gon.movie_id + "&id=" + item.id + "&name=" + item.name
+    data: {
+      movie: gon.movie_id
+      id: item.id
+      name: item.name
+      },
     success: completeRemoteEditMember
     })
 
@@ -29,7 +33,9 @@ memberDelete = (item) ->
   $.ajax({
     type: "DELETE",
     url: "/members/"+item.id+".json",
-    data: "movie="+gon.movie_id,
+    data: {
+      movie: gon.movie_id
+      },
     success: completeRemoteDeleteMember
     })
 
