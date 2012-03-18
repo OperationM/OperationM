@@ -1,0 +1,5 @@
+<% tag = Tag.new %>
+<%= form_tag("/movies/#{movie.id}/tags", {:remote => true, :id => "tag_form", :name => "tag_form"}) do %>
+  <%= text_field_tag "tag[name]", "", :id => "tag_name" %>
+  <%= submit_tag "AddTag" %>
+<% end %>
