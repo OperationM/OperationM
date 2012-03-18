@@ -1,0 +1,24 @@
+<%= form_tag({:controller => "movies", :action => "create"}, {:id => "movie_form", :name => "movie_form"}) do %>
+  <% if @movie.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <ul>
+      <% @movie.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= label_tag "title" %><br />
+    <%= text_field_tag "movie[title]", "", :id => "movie_title" %>
+  </div>
+  <div class="field">
+    <%= label_tag "description" %><br />
+    <%= text_field_tag "movie[description]", "", :id => "movie_description" %>
+  </div>
+
+  <%= render "video" %>
+
+<% end %>
