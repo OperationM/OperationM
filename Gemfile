@@ -5,6 +5,8 @@ gem 'omniauth'
 gem 'omniauth-facebook'
 gem 'faraday'
 gem 'gon'
+gem 'execjs'
+gem 'therubyracer'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
