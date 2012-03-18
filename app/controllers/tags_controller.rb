@@ -12,6 +12,8 @@ class TagsController < ApplicationController
     return redirect_to '/404.html' unless request.xhr?
   end
 
+  # tags GET    /tags(.:format)
+  # パラメーターで渡ってきた文字を含むタグを返す
   def index
     @tags = Tag.where("name like ?", "%#{params[:q]}%")
     respond_to do |format|
@@ -21,7 +23,7 @@ class TagsController < ApplicationController
   end
 
   # POST   /movies/:movie_id/tags(.:format)
-  # tagを作成してmovieに関連付ける
+  # パラメーターで渡ってきたtagを作成して返す
   def create
     @tag = Tag.new(:name => params[:name])
 
@@ -35,6 +37,8 @@ class TagsController < ApplicationController
     end
   end
 
+  # PUT    /tags/:id(.:format)
+  # 動画にタグを関連させる
   def update
     @movie = Movie.find(params[:movie])
     @tag = Tag.find(params[:id])
@@ -48,9 +52,9 @@ class TagsController < ApplicationController
       render :json => {:error => @tag.errors, status: :unprocessable_entity}
     end
   end
-  # GET /movies/:movie_id/tags/:id(.:format)
-  # movie_tag
-  # tagに関連付いているmoviesを返す
+
+  # tag GET    /tags/:id(.:format)
+  # tagに関連付いている動画を返す
   def show
     @tag = Tag.find(params[:id])
     @movies = @tag.movies
@@ -61,7 +65,7 @@ class TagsController < ApplicationController
     end
   end
 
-  # DELETE /movies/:movie_id/tags/:id(.:format)
+  # tags GET    /tags(.:format)
   # movieからtagの関連を削除する
   def destroy
     movie = Movie.find(params[:movie])

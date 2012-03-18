@@ -3,10 +3,9 @@ class Member < ActiveRecord::Base
   has_many :movies, :through => :memberings
 
   # FBのIDでユーザーを作成
-  def self.create_with_id_and_name(id, name)
+  def self.create_with_id(id)
     create!do |member|
       member.id = id
-      member.name = name
     end
   end
 end

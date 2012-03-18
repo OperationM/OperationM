@@ -11,8 +11,8 @@ class MoviesController < ApplicationController
     redirect_to root_url, :notice => "Required log in as Admin." unless admin?
   end
 
-  # GET /movies
-  # GET /movies.json
+  # movies GET    /movies(.:format) 
+  # 動画一覧表示
   def index
     ###### feed更新時のpush通知に対応までの暫定対処(FeedFetch版)
     ###### 問題点１：index.html.erbロード時にfetchするので表示が遅くなる
@@ -82,8 +82,8 @@ class MoviesController < ApplicationController
     end
   end
 
-  # GET /movies/1
-  # GET /movies/1.json
+  # movie GET    /movies/:id(.:format)
+  # 一つの動画を表示
   def show
     @movie = Movie.find(params[:id])
 
@@ -96,8 +96,8 @@ class MoviesController < ApplicationController
     end
   end
 
-  # GET /movies/new
-  # GET /movies/new.json
+  # new_movie GET    /movies/new(.:format)
+  # 動画投稿のフォームに渡す
   def new
     @movie = Movie.new
     # fbにajaxでpostするのでaccess_tokenを渡してやる必要がある
@@ -110,13 +110,14 @@ class MoviesController < ApplicationController
     end
   end
 
-  # GET /movies/1/edit
+  # edit_movie GET    /movies/:id/edit(.:format)
+  # 編集対象のmovie
   def edit
     @movie = Movie.find(params[:id])
   end
 
-  # POST /movies
-  # POST /movies.json
+  # POST   /movies(.:format)
+  # フォームから送られてきた内容を登録
   def create
     @movie = Movie.new(params[:movie])
 
@@ -131,8 +132,8 @@ class MoviesController < ApplicationController
     end
   end
 
-  # PUT /movies/1
-  # PUT /movies/1.json
+  # PUT    /movies/:id(.:format) 
+  # 動画の情報を更新
   def update
     @movie = Movie.find(params[:id])
 
@@ -147,8 +148,8 @@ class MoviesController < ApplicationController
     end
   end
 
-  # DELETE /movies/1
-  # DELETE /movies/1.json
+  # DELETE /movies/:id(.:format)
+  # 動画を削除
   def destroy
     @movie = Movie.find(params[:id])
     @movie.destroy

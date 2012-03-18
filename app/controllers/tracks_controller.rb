@@ -12,6 +12,8 @@ class TracksController < ApplicationController
     return redirect_to '/404.html' unless request.xhr?
   end
 
+  # tracks POST   /tracks(.:format) 
+  # パラメーターからtrackとartistを検索または作成して返す
   def create
     if params.has_key?("movie")
       logger.debug "update relation"
@@ -52,6 +54,8 @@ class TracksController < ApplicationController
     end
   end
 
+  # PUT    /tracks/:id(.:format)
+  # 動画に曲を関連させる
   def update
     @movie = Movie.find(params[:movie])
     @tag = Tag.find(params[:id])
@@ -65,12 +69,12 @@ class TracksController < ApplicationController
       render :json => {:error => @tag.errors, status: :unprocessable_entity}
     end
   end
-  # GET /movies/:movie_id/tags/:id(.:format)
-  # movie_tag
-  # tagに関連付いているmoviesを返す
+
+  # track GET    /tracks/:id(.:format) 
+  # 曲に関連づいている動画を返す
   def show
-    @tag = Tag.find(params[:id])
-    @movies = @tag.movies
+    @track = Track.find(params[:id])
+    @movies = @track.movies
 
     respond_to do |format|
       format.html # show.html.erb
@@ -78,8 +82,8 @@ class TracksController < ApplicationController
     end
   end
 
-  # DELETE /movies/:movie_id/tags/:id(.:format)
-  # movieからtagの関連を削除する
+  # DELETE /tracks/:id(.:format)
+  # 動画から曲の関連を削除する
   def destroy
     movie = Movie.find(params[:movie])
     track = Track.find(params[:id])
