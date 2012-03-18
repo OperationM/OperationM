@@ -1,7 +1,7 @@
 MoogleApp::Application.routes.draw do
 
   resources :movies
-  resources :tags, :except => [:new, :edit]
+  resources :tags, :only => [:index, :show, :create, :update, :destroy]
   resources :members, :only => [:show, :create, :destroy]
   resources :tracks, :only => [:show, :create, :update, :destroy]
 

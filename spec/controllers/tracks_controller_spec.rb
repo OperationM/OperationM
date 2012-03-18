@@ -2,32 +2,32 @@ require 'spec_helper'
 
 describe TracksController do
 
-  describe "GET 'show'" do
-    it "returns http success" do
-      get 'show'
-      response.should be_success
-    end
+  describe "GET 'index'" do
+    pending "should not respond http success"
   end
 
-  describe "GET 'update'" do
-    it "returns http success" do
-      get 'update'
-      response.should be_success
-    end
+  describe "GET 'new'" do
+    pending "should not respond http success"
   end
 
   describe "GET 'create'" do
-    it "returns http success" do
-      get 'create'
-      response.should be_success
-    end
+    pending "should respond http success"
+  end
+
+  describe "GET 'edit'" do
+    pending "should not respond http success"
+  end
+
+  describe "GET 'show'" do
+    pending "should respond http success"
+  end
+
+  describe "GET 'update'" do
+    pending "should respond http success"
   end
 
   describe "GET 'destroy'" do
-    it "returns http success" do
-      get 'destroy'
-      response.should be_success
-    end
+    pending "should respond http success"
   end
 
 end
