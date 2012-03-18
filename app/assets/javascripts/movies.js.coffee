@@ -75,7 +75,7 @@ uploadProgress = (evt) ->
 uploadComplete = (evt) ->
   $('#sync').empty().append('<div class="field"><label for="graph_object">Graph object</label><br><input id="movie_video" name="movie[video]" type="text" value=""></div>');
   $('#movie_video').val(parseID(evt.target.responseText))
-  postForm
+  postForm()
 
 # アップロードに失敗した時の処理
 uploadFailed = (evt) ->
