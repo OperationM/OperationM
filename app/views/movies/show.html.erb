@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+<object width="720" height="480" >
+	<param name="allowfullscreen" value="true" />
+	<param name="movie" value="<%= @movie.source %>" />
+	<embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
+</object><br />
+<%= label_tag 'tags' %>
+<%= text_field_tag 'tags', "", "data-pre" => @movie.tags.map(&:attributes).to_json %>
+<%= label_tag 'members' %>
+<%= text_field_tag 'members', "", "data-pre" => @movie.members.map(&:attributes).to_json %>
+<%= label_tag 'tracks' %>
+<%= text_field_tag 'tracks',"", "data-pre" => @movie.tracks.map{|t|{:trackId=>t.id, :trackName=>t.name, :artistId=>t.artist_id, :artistName=>t.artist.name, :artworkUrl30=>t.art_work_url_30}}.to_json %>
+<%= link_to 'Edit', edit_movie_path(@movie) %> |
+<%= link_to 'Back', movies_path %>

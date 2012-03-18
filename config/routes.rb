@@ -1,11 +1,19 @@
 MoogleApp::Application.routes.draw do
 
+  resources :movies
+  resources :tags, :only => [:index, :show, :create, :update, :destroy]
+  resources :members, :only => [:show, :create, :destroy]
+  resources :tracks, :only => [:show, :create, :update, :destroy]
+
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
   match '/help', to: 'static_pages#help'
 
   root to: 'static_pages#home'
 
+  match "/auth/:provider/callback" => "sessions#callback"
+  match "/logout" => "sessions#destroy", :as => :logout
+  
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
