@@ -6,11 +6,11 @@
 $ ->
   $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
     queryParam: 'term',
-    propertyToSearch: 'artistName',
+    propertyToSearch: 'artist',
     addManually: true,
     beforeAdd: trackAddBefore,
     onDelete: trackDeleted,
-    prePopulate: $('#tracks_tokens').data('pre'),
+    prePopulate: $('#tracks').data('pre'),
     onResult: tracksResults,
     noResultsText: "No results. When you add, please press the enter key or click here.",
     resultsFormatter: tracksFormatResults,
@@ -75,14 +75,13 @@ completeRemoteDeleteTrack = (res) ->
 # tokenInput formatter
 # iTunesAPIのレスポンスを加工
 tracksResults = (res) ->
-  res.results
   ret = []
-  for item in results
+  for item in res.results
     data = {
       id: item.trackId
       name: item.trackName
       artist_id: item.artistId
-      artist: item.aritstName
+      artist: item.artistName
       art_work_url_30: item.artworkUrl30
     }
     ret.push(data)

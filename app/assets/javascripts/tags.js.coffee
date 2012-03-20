@@ -10,7 +10,7 @@ $ ->
     beforeAdd: tagAddBefore,
     onDelete: tagDeleted,
     noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#tags_tokens').data('pre')
+    prePopulate: $('#tags').data('pre')
     })
 
 # tokenInput callback

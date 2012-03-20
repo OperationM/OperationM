@@ -36,7 +36,7 @@ class TracksController < ApplicationController
     if @track.blank?
       @track = Track.create
       @track.name = params[:track]
-      @track.art_work_url_30 = params[:art_work_url_30]
+      @track.art_work_url_30 = params[:artwork]
       @artist.tracks << @track
     end
     @movie = Movie.find_by_id(params[:movie])

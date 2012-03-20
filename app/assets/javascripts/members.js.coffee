@@ -10,7 +10,7 @@ $ ->
     beforeAdd: memberAddBefore,
     onDelete: memberDelete,
     noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#members_tokens').data('pre')
+    prePopulate: $('#members').data('pre')
     })
 
 # tokenInput callback
