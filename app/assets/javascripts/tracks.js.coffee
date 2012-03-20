@@ -7,57 +7,49 @@ $ ->
   $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
     queryParam: 'term',
     propertyToSearch: 'artistName',
-    newTokenConfirmed: trackNew,
-    onAdd: trackAdd,
+    addManually: true,
+    beforeAdd: trackAddBefore,
     onDelete: trackDeleted,
-    newTokenAllow: true,
-    confirmNewTokenText: "Add it?",
     prePopulate: $('#tracks_tokens').data('pre'),
     onResult: tracksResults,
+    noResultsText: "No results. When you add, please press the enter key or click here.",
     resultsFormatter: tracksFormatResults,
     tokenFormatter: tracksFormatToken,
     searchDelay: 2000
     })
 
 # tokenInput callbacks
-# 新規曲名＆アーティスト名登録が選択されたら、サーバーにその情報を送信する。新規登録時の記入フォーマットは"曲名@アーティスト名"
-trackNew = (value) ->
-  console.log "Begin remote add track: "+value
-  div = value.split("@")
-  $.ajax({
-    type: "POST",
-    url: "/tracks.json",
-    data: {
+# 検索結果から選択された時。新規登録時の記入フォーマットは"曲名@アーティスト名"
+trackAddBefore = (item) ->
+  console.log "Begin remote add track: "+item.name
+  if item.id == null
+    div = item.name.split("@")
+    data = {
+      movie: gon.movie_id
       track: div[0]
       artist: div[1]
-      art_work_url_30: "/assets/no_art_work.png"
-      },
-    success: completeRemoteAddTrack
-    })
-
-# トラックが追加されたら、サーバーのその情報を送信して動画とトラックの関連づけをする
-trackAdd = (item) ->
-  console.log "Begin update relation: movie="+gon.movie_id+" track="+item.trackId
+      artwork: "/assets/no_art_work.png"
+    }
+  else
+    data = {
+      movie: gon.movie_id
+      track: item.name
+      artist: item.artist
+      artwork: item.art_work_url_30
+    }  
   $.ajax({
     type: "POST",
     url: "/tracks.json",
-    data: {
-      movie: gon.movie_id
-      track: item.trackName
-      artist: item.artistName
-      track_id: item.trackId
-      artist_id: item.artistId
-      art_work_url_30: item.artworkUrl30
-      },
-    success: completeRemoteEditTrack
+    data: data,
+    success: completeRemoteAddTrack
     })
 
 # トラックが削除されたら、サーバーにその情報を送信して動画とトラックの関連削除をする
 trackDeleted = (item) ->
-  console.log "Begin delete relation: movie="+gon.movie_id+" track="+item.trackId
+  console.log "Begin delete relation: movie="+gon.movie_id+" track="+item.id
   $.ajax({
     type: "DELETE",
-    url: "/tracks/"+item.trackId+".json",
+    url: "/tracks/"+item.id+".json",
     data: {
       movie: gon.movie_id
       },
@@ -69,16 +61,12 @@ trackDeleted = (item) ->
 completeRemoteAddTrack = (res) ->
   console.log "Complete remote add: "+res.id
   $('#tracks').tokenInput('add', {
-    trackId: res.id, 
-    trackName: res.name, 
-    artistId: res.artist.id, 
-    artistName: res.artist.name, 
-    artworkUrl30: res.art_work_url_30
+    id: res.id, 
+    name: res.name, 
+    artist_id: res.artist.id, 
+    artist: res.artist.name, 
+    art_work_url_30: res.art_work_url_30
     })
-
-# サーバーで動画とトラックの関連づけが完了した時
-completeRemoteEditTrack = (res) ->
-  console.log "Complete update relation: track="+res.id
 
 # サーバーで動画とトラックの関連削除が完了した時
 completeRemoteDeleteTrack = (res) ->
@@ -88,11 +76,22 @@ completeRemoteDeleteTrack = (res) ->
 # iTunesAPIのレスポンスを加工
 tracksResults = (res) ->
   res.results
+  ret = []
+  for item in results
+    data = {
+      id: item.trackId
+      name: item.trackName
+      artist_id: item.artistId
+      artist: item.aritstName
+      art_work_url_30: item.artworkUrl30
+    }
+    ret.push(data)
+  ret
 
 # ドロップダウンに表示する内容を加工
 tracksFormatResults = (item) ->
-  "<li>" + '<img src="'+ item.artworkUrl30 + '"/>&nbsp;' + item.trackName + " - " + item.artistName + " - " + "</li>"
+  "<li>" + '<img src="'+ item.art_work_url_30 + '"/>&nbsp;' + item.name + " - " + item.artist + " - " + "</li>"
 
 # 追加された時に表示する内容を加工
 tracksFormatToken = (item) ->
-  "<li><p>" + '<img src="'+ item.artworkUrl30 + '"/>&nbsp;' + item.trackName + " - " + item.artistName + " - " + "</p></li>"
+  "<li><p>" + '<img src="'+ item.art_work_url_30 + '"/>&nbsp;' + item.name + " - " + item.artist + " - " + "</p></li>"
