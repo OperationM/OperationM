@@ -15,7 +15,7 @@ class MembersController < ApplicationController
   # member GET    /members/:id(.:format)
   # メンバーに関連する情報表示
   def show
-    @member = Member.find(params[:id])
+    @member = Member.find_by_id(params[:id])
     @movies = @member.movies
 
     respond_to do |format|
@@ -27,10 +27,10 @@ class MembersController < ApplicationController
   # members POST   /members(.:format)
   # 既に登録されているかをチェックして動画に関連させる
   def create
-    @movie = Movie.find(params[:movie])
-    @member = Member.find_by_id(params[:id])
+    @movie = Movie.find_by_id(params[:movie])
+    @member = Member.find_by_name(params[:name])
     if@member.blank?
-      @member = Member.create_with_id(params[:id])
+      @member = Member.create()
       @member.name = params[:name]
     end
     @movie.members << @member
@@ -48,8 +48,8 @@ class MembersController < ApplicationController
   # DELETE /members/:id(.:format)
   # 動画の関連を削除する。メンバー自体は削除しない
   def destroy
-    movie = Movie.find(params[:movie])
-    member = Member.find(params[:id])
+    movie = Movie.find_by_id(params[:movie])
+    member = Member.find_by_id(params[:id])
     movie.members.delete(member)
 
     if movie.save
