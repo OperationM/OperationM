@@ -2,16 +2,6 @@ class TracksController < ApplicationController
   before_filter :authenticate_member
   before_filter :check_ajax, :only => "create, destroy"
 
-  # 権限チェック
-  def authenticate_member
-    redirect_to root_url, :notice => "Required log in as Member." unless member?
-  end
-
-  # AJAXのみ対応
-  def check_ajax
-    return redirect_to '/404.html' unless request.xhr?
-  end
-
   # track GET    /tracks/:id(.:format) 
   # 曲に関連づいている動画を返す
   def show

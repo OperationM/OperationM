@@ -2,16 +2,6 @@ class TagsController < ApplicationController
   before_filter :authenticate_member
   before_filter :check_ajax, :only => "create, destroy"
 
-  # 権限チェック
-  def authenticate_member
-    redirect_to root_url, :notice => "Required log in as Member." unless member?
-  end
-
-  # AJAXのみ対応
-  def check_ajax
-    return redirect_to '/404.html' unless request.xhr?
-  end
-
   # tags GET    /tags(.:format)
   # パラメーターで渡ってきた文字を含むタグを返す
   def index
