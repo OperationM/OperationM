@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Movie < ActiveRecord::Base
 	has_many :taggings
 	has_many :tags, :through => :taggings
@@ -13,18 +14,22 @@ class Movie < ActiveRecord::Base
   scope :artist, lambda{ |term| joins(:tracks => :artist).where("artists.name like ?", "%#{term}%") unless term.blank? }
 
   def self.search(term = nil, scopes = [:movie, :member, :tag, :track, :artist], unique = true)
+    words = Array.new
+    words = term.gsub(/　/," ").split(nil)
     if unique
-      return self.combined(term, scopes)
+      return self.combined(words, scopes)
     else
-      return self.indivisual(term, scopes)
+      return self.indivisual(words, scopes)
     end
   end
 
-  def self.combined(term, scopes)
+  def self.combined(words, scopes)
     results = []
-    unless term.blank?
-      scopes.map do |scope|
-        results |= self.send(scope,term)
+    words.each do |word|
+      unless word.blank?
+        scopes.map do |scope|
+          results |= self.send(scope,word)
+        end
       end
     end
     results
@@ -32,9 +37,11 @@ class Movie < ActiveRecord::Base
 
   def self.indivisual(term, scopes)
     results = {}
-    unless term.blank?
-      scopes.map do |scope|
-        results[scope] = self.send(scope,term)
+    words.each do |word|
+      unless word.blank?
+        scopes.map do |scope|
+          results[scope] << self.send(scope,word)
+        end
       end
     end
     results
