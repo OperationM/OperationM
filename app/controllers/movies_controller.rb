@@ -2,6 +2,16 @@ class MoviesController < ApplicationController
   before_filter :authenticate_member
   before_filter :authenticate_admin, :only => :new
 
+  # 動画検索
+  def search
+    @movies = Movie.search(params[:search_input])
+    logger.debug @movies
+    respond_to do |format|
+      format.html
+      format.json { render json: @movies}
+    end
+  end
+
   # movies GET    /movies(.:format) 
   # 動画一覧表示
   def index

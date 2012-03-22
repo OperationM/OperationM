@@ -1,7 +1,7 @@
 <header>
 	<%= link_to logo, root_path %>
-	<form name="searchform" id="searchform" method="get" action="#">  
-		<input name="keywords" id="keywords" value="" type="text" />
-		<input type="button" />  
-	</form>
+  <%= form_tag(url_for(:controller => 'movies', :action => 'search'), :id => "search_field") do %>
+    <%= text_field_tag :search_input, '', :size => '40' %>
+    <%= button_tag :search %>
+  <% end %>
 </header>
