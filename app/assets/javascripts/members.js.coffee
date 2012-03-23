@@ -10,7 +10,8 @@ $ ->
     beforeAdd: memberAddBefore,
     onDelete: memberDelete,
     noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#members').data('pre')
+    prePopulate: $('#members').data('pre'),
+    tokenFormatter: membersFormatToken
     })
 
 # tokenInput callback
@@ -48,3 +49,7 @@ completeRemoteAddMember = (res) ->
 # サーバーで動画とメンバーの関連削除が完了した際の処理
 completeRemoteDeleteMember = (res) ->
   console.log "Complete delete relation: member="+res.id
+
+# 追加された時に表示する内容を加工
+membersFormatToken = (item) ->
+  "<li><p>" + '<a href="/members/' + item.id + '">' + item.name + "<a/></p></li>"

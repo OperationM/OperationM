@@ -10,7 +10,8 @@ $ ->
     beforeAdd: tagAddBefore,
     onDelete: tagDeleted,
     noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#tags').data('pre')
+    prePopulate: $('#tags').data('pre'),
+    tokenFormatter: tagsFormatToken
     })
 
 # tokenInput callback
@@ -48,3 +49,7 @@ completeRemoteAddTag = (res) ->
 # サーバーで動画とタグの関連削除が完了した時
 completeRemoteDeleteTag = (res) ->
   console.log "Complete delete relation: tag="+res.id
+
+# 追加された時に表示する内容を加工
+tagsFormatToken = (item) ->
+  "<li><p>" + '<a href="/tags/' + item.id + '">' + item.name + "<a/></p></li>"

@@ -93,4 +93,4 @@ tracksFormatResults = (item) ->
 
 # 追加された時に表示する内容を加工
 tracksFormatToken = (item) ->
-  "<li><p>" + '<img src="'+ item.art_work_url_30 + '"/>&nbsp;' + item.name + " - " + item.artist + " - " + "</p></li>"
+  "<li><p>" + '<a href="/tracks/' + item.id + '"><img src="'+ item.art_work_url_30 + '"/>&nbsp;' + item.name + " - " + item.artist + " - " + "<a/></p></li>"
