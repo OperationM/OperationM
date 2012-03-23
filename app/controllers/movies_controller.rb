@@ -4,7 +4,8 @@ class MoviesController < ApplicationController
 
   # 動画検索
   def search
-    @movies = Movie.search(params[:search_input])
+    @keyword = params[:search_input]
+    @movies = Movie.search(@keyword)
     logger.debug @movies
     respond_to do |format|
       format.html

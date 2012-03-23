@@ -1,23 +1,2 @@
-<h1>Search results</h1>
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @movies.each do |movie| %>
-  <% if movie.source %>
-    <tr>
-      <td>
-        <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
-      </td>
-      <td>
-        <div><%= movie.title %>(<%= movie.length %>)</div>
-        <div><%= movie.description %></div>
-        <div><%= link_to 'Edit', edit_movie_path(movie) %> <%= link_to 'Destroy', movie, confirm: 'Are you sure?', method: :delete %></div>
-      </td>
-    </tr>
-  <% end %>
-<% end %>
-
-</table>
+<%= content_tag(:h1, "Search results for '#{@keyword}'") %>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>

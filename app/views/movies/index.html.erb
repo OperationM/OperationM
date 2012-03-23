@@ -1,25 +1,23 @@
-<h1>Listing movies</h1>
-<%= link_to 'New Movie', new_movie_path %>
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
+<h1>Recent movies</h1>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>
 
-<% @movies.each do |movie| %>
-  <% if movie.source %>
-    <tr>
-      <td>
-        <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
-      </td>
-      <td>
-        <div><%= movie.title %>(<%= movie.length %>)</div>
-        <div><%= movie.description %></div>
-        <div><%= link_to 'Edit', edit_movie_path(movie) %> <%= link_to 'Destroy', movie, confirm: 'Are you sure?', method: :delete %></div>
-      </td>
-    </tr>
-  <% end %>
+<%= content_tag :div do %>
+<% tags = Tag.all %>
+<% tags.each do |tag| %>
+  <%= link_to tag.name, tag_path(tag) %>
+<% end %>
 <% end %>
 
-</table>
-<br />
+<%= content_tag :div do %>
+<% members = Member.all %>
+<% members.each do |member| %>
+  <%= link_to member.name, member_path(member) %>
+<% end %>
+<% end %>
+
+<%= content_tag :div do %>
+<% tracks = Track.all %>
+<% tracks.each do |track| %>
+  <%= link_to track.name, track_path(track) %>
+<% end %>
+<% end %>

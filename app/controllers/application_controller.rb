@@ -4,6 +4,8 @@ class ApplicationController < ActionController::Base
   helper_method :authenticate_admin
   helper_method :authenticate_member
   helper_method :fetch_movie_src
+  helper_method :admin?
+  helper_method :member?
 
   private
   # ログインユーザーを返す

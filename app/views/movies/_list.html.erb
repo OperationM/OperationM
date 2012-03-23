@@ -1,0 +1,22 @@
+<table>
+  <tr>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% movies.each do |movie| %>
+  <% if movie.source %>
+    <tr>
+      <td>
+        <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
+      </td>
+      <td>
+        <div><%= movie.title %>(<%= movie.length %>)</div>
+        <div><%= movie.description %></div>
+      </td>
+    </tr>
+  <% end %>
+<% end %>
+
+</table>
+<br />
