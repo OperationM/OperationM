@@ -1,15 +1,27 @@
 <p id="notice"><%= notice %></p>
 <%= content_tag(:h1, "#{@movie.title}") %>
-<object width="720" height="480" >
-	<param name="allowfullscreen" value="true" />
-	<param name="movie" value="<%= @movie.source %>" />
-	<embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
-</object><br />
-<%= label_tag 'tags' %>
-<%= text_field_tag 'tags', "", "data-pre" => @movie.tags.map(&:attributes).to_json %>
-<%= label_tag 'members' %>
-<%= text_field_tag 'members', "", "data-pre" => @movie.members.map(&:attributes).to_json %>
-<%= label_tag 'tracks' %>
-<%= text_field_tag 'tracks',"", "data-pre" => @movie.tracks.map{|t|{:id=>t.id, :name=>t.name, :artist_id=>t.artist_id, :artist=>t.artist.name, :art_work_url_30=>t.art_work_url_30}}.to_json %>
+
+<%= content_tag :div do %>
+  <object width="720" height="480" >
+  	<param name="allowfullscreen" value="true" />
+  	<param name="movie" value="<%= @movie.source %>" />
+  	<embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
+  </object>
+<% end %>
+
+<%= content_tag :div do %>
+  <%= label_tag 'tags' %>
+  <%= text_field_tag 'tags', "", "data-pre" => @movie.tags.map(&:attributes).to_json %>
+<% end %>
+<%= content_tag :div do %>
+  <%= label_tag 'members' %>
+  <%= text_field_tag 'members', "", "data-pre" => @movie.members.map(&:attributes).to_json %>
+<% end %>
+
+<%= content_tag :div do %>
+  <%= label_tag 'tracks' %>
+  <%= text_field_tag 'tracks',"", "data-pre" => @movie.tracks.map{|t|{:id=>t.id, :name=>t.name, :artist_id=>t.artist_id, :artist=>t.artist.name, :art_work_url_30=>t.art_work_url_30}}.to_json %>
+<% end %>
+
 <%= link_to 'Edit', edit_movie_path(@movie) %> | <%= link_to 'Destroy', @movie, confirm: 'Are you sure?', method: :delete %> |
 <%= link_to 'Back', movies_path %>

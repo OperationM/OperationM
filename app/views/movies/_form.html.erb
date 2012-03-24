@@ -31,11 +31,11 @@
 
   <% if !@movie.source %>
     <%= render "video" %>
-    <div class="row">
-      <input id="start_upload" type="button" value="Upload" />
-    </div>
+    <%= content_tag :div, :class => "row" do %>
+      <%= button_tag "Upload", :id => "start_upload", :type => "button" %>
+    <% end %>
   <% else %>
     <%= submit_tag "Update" %>
   <% end %>
-  
+
 <% end %>
