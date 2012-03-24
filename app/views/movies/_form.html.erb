@@ -1,7 +1,8 @@
-<%= form_tag({:controller => "movies", :action => "create"}, {:id => "movie_form", :name => "movie_form"}) do %>
+<%= form_for(@movie) do |f| %>
   <% if @movie.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@post.errors.count, "error") %> prohibited this post from being saved:</h2>
+      <h2><%= pluralize(@movie.errors.count, "error") %> prohibited this post from being saved:</h2>
+
       <ul>
       <% @movie.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
@@ -11,28 +12,26 @@
   <% end %>
 
   <%= f.fields_for :live do |l| %>
-    <%= l.label(:id, "Live:") %>
-    <%= l.select(:id, Live.all.collect {|p| [p.name, p.id]}, {:include_blank => true}) %>
+    <%= l.label(:id, "Select Live:") %>
+    <%= l.select(:id, Live.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
+    <%= content_tag :div, :id => "new_live_wrapper" do %>
     <%= l.label(:name, "New Live: ") %>
     <%= l.text_field(:name) %>
+    <% end %>
   <% end %>
 
- <%= f.fields_for :band do |b| %>
-    <%= b.label(:id, "Band:") %>
-    <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}, {:include_blank => true}) %>
+  <%= f.fields_for :band do |b| %>
+    <%= b.label(:id, "Select Band:") %>
+    <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
+    <%= content_tag :div, :id => "new_band_wrapper" do %>
     <%= b.label(:name, "New Band: ") %>
     <%= b.text_field(:name) %>
+    <% end %>
   <% end %>
-  
-  <div class="field">
-    <%= label_tag "title" %><br />
-    <%= text_field_tag "movie[title]", "", :id => "movie_title" %>
-  </div>
-  <div class="field">
-    <%= label_tag "description" %><br />
-    <%= text_field_tag "movie[description]", "", :id => "movie_description" %>
-  </div>
 
-  <%= render "video" %>
-
+  <% if !@movie.source %>
+    <%= render "video" %>
+  <% else %>
+    <%= submit_tag "Update" %>
+  <% end %>
 <% end %>

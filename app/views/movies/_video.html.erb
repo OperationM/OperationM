@@ -1,24 +1,20 @@
-<% if !@movie.source %>
+<div class="field">
+  <%= label_tag "sync" %><br />
+  <%= check_box_tag "only_sync", false, false, :id => "only_sync" %>
+</div>
+<div id="sync">
   <div class="field">
-    <%= label_tag "sync" %><br />
-    <%= check_box_tag "only_sync", false, false, :id => "only_sync" %>
+    <%= label_tag "attachment" %><br />
+    <%= file_field "file", "upload" %>
   </div>
-  <div id="sync">
-    <div class="field">
-      <%= label_tag "attachment" %><br />
-      <%= file_field "file", "upload" %>
-    </div>
-    <div class="field">
-      <%= hidden_field_tag "movie[video]", "", :id => "movie_video" %>
-    </div>
-    <div id="file_name"></div>
-    <div id="file_size"></div>
-    <div id="file_type"></div>
-    <div id="progress_number"></div>
+  <div class="field">
+    <%= hidden_field_tag "movie[video]", "", :id => "movie_video" %>
   </div>
-  <div class="row">
-    <input id="start_upload" type="button" value="Upload" />
-  </div>
-<% else %>
-  <%= submit_tag "Update" %>
-<% end %>
+  <div id="file_name"></div>
+  <div id="file_size"></div>
+  <div id="file_type"></div>
+  <div id="progress_number"></div>
+</div>
+<div class="row">
+  <input id="start_upload" type="button" value="Upload" />
+</div>
