@@ -6,8 +6,8 @@ class TagsController < ApplicationController
   # パラメーターで渡ってきた文字を含むタグを返す
   def index
     @tags = Tag.where("name like ?", "%#{params[:q]}%")
+
     respond_to do |format|
-      format.html
       format.json {render :json => @tags.map(&:attributes)}
     end
   end
@@ -27,16 +27,16 @@ class TagsController < ApplicationController
   # POST   /movies/:movie_id/tags(.:format)
   # パラメーターで渡ってきたtagを作成して返す
   def create
-    @tag = Tag.new(:name => params[:name])
     @movie = Movie.find(params[:movie])
+    @tag = Tag.create(:name => params[:name])
     @movie.tags << @tag
-    if @tag.save && @movie.save
-      respond_to do |format|
-        format.html
-        format.json {render :json => @tag}
+
+    respond_to do |format|
+      if @movie.save
+        format.json { render :json => @tag }
+      else
+        format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => @tag.errors, status: :unprocessable_entity}
     end
   end
 
@@ -47,13 +47,12 @@ class TagsController < ApplicationController
     tag = Tag.find(params[:id])
     movie.tags.delete(tag)
 
-    if movie.save
-      respond_to do |format|
-        format.html
+    respond_to do |format|
+      if movie.save
         format.json {render :json => tag}
+      else
+        format.json { render json: movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => movie.errors, status: :unprocessable_entity}
     end
   end
 

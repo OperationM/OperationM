@@ -17,28 +17,16 @@ class TracksController < ApplicationController
   # tracks POST   /tracks(.:format) 
   # パラメーターからtrackとartistを検索または作成して返す
   def create
-    @artist = Artist.find_by_name(params[:artist])
-    if @artist.blank?
-      @artist = Artist.create
-      @artist.name = params[:artist]
-    end
-    @track = @artist.tracks.find_by_name(params[:track])
-    if @track.blank?
-      @track = Track.create
-      @track.name = params[:track]
-      @track.art_work_url_30 = params[:artwork]
-      @artist.tracks << @track
-    end
     @movie = Movie.find(params[:movie])
+    @track = Track.find_by_name_or_create(params)
     @movie.tracks << @track
-
-    if @track.save && @artist.save && @movie.save
-      respond_to do |format|
-        format.html
+    
+    respond_to do |format|
+      if @movie.save
         format.json {render :json => @track.to_json(:include => [:artist])}
+      else
+        format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => @track.errors, status: :unprocessable_entity}
     end
   end
 
@@ -48,14 +36,13 @@ class TracksController < ApplicationController
     movie = Movie.find(params[:movie])
     track = Track.find(params[:id])
     movie.tracks.delete(track)
-
-    if movie.save
-      respond_to do |format|
-        format.html
+    
+    respond_to do |format|
+      if movie.save
         format.json {render :json => track}
+      else
+        format.json { render json: movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => movie.errors, status: :unprocessable_entity}
     end
   end
 end

@@ -18,20 +18,15 @@ class MembersController < ApplicationController
   # 既に登録されているかをチェックして動画に関連させる
   def create
     @movie = Movie.find(params[:movie])
-    @member = Member.find_by_name(params[:name])
-    if@member.blank?
-      @member = Member.create()
-      @member.name = params[:name]
-    end
+    @member = Member.find_by_name_or_create(params)
     @movie.members << @member
-    
-    if @member.save && @movie.save
-      respond_to do |format|
-        format.html
+        
+    respond_to do |format|
+      if @movie.save
         format.json {render :json => @member}
+      else
+        format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => @member.errors, status: :unprocessable_entity}
     end
   end
 
@@ -42,13 +37,12 @@ class MembersController < ApplicationController
     member = Member.find(params[:id])
     movie.members.delete(member)
 
-    if movie.save
-      respond_to do |format|
-        format.html
+    respond_to do |format|
+      if movie.save
         format.json {render :json => member}
+      else
+        format.json { render json: movie.errors, status: :unprocessable_entity }
       end
-    else
-      render :json => {:error => movie.errors, status: :unprocessable_entity}
     end
   end
 

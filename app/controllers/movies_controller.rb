@@ -6,7 +6,7 @@ class MoviesController < ApplicationController
   def search
     @keyword = params[:search_input]
     @movies = Movie.search(@keyword)
-    logger.debug @movies
+
     respond_to do |format|
       format.html
       format.json { render json: @movies}
@@ -29,7 +29,6 @@ class MoviesController < ApplicationController
   # 一つの動画を表示
   def show
     @movie = Movie.find(params[:id])
-
     gon.token = current_user.access_token
     gon.movie_id = @movie.id
 
@@ -43,8 +42,6 @@ class MoviesController < ApplicationController
   # 動画投稿のフォームに渡す
   def new
     @movie = Movie.new
-    # fbにajaxでpostするのでaccess_tokenを渡してやる必要がある
-    # gonはjsに変数を渡せる便利gem。下記の場合js側で使う時もgon.tokenでOK
     gon.token = current_user.access_token
 
     respond_to do |format|
