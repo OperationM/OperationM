@@ -10,6 +10,20 @@
     </div>
   <% end %>
 
+  <%= f.fields_for :live do |l| %>
+    <%= l.label(:id, "Live:") %>
+    <%= l.select(:id, Live.all.collect {|p| [p.name, p.id]}, {:include_blank => true}) %>
+    <%= l.label(:name, "New Live: ") %>
+    <%= l.text_field(:name) %>
+  <% end %>
+
+ <%= f.fields_for :band do |b| %>
+    <%= b.label(:id, "Band:") %>
+    <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}, {:include_blank => true}) %>
+    <%= b.label(:name, "New Band: ") %>
+    <%= b.text_field(:name) %>
+  <% end %>
+  
   <div class="field">
     <%= label_tag "title" %><br />
     <%= text_field_tag "movie[title]", "", :id => "movie_title" %>

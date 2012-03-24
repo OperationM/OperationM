@@ -6,6 +6,8 @@ class Movie < ActiveRecord::Base
   has_many :members, :through => :memberings
   has_many :trackkings
   has_many :tracks, :through => :trackkings
+  belongs_to :band
+  belongs_to :live
 
   scope :movie, lambda { |term| where("title like ? or description like ?", "%#{term}%", "%#{term}%") unless term.blank? }
   scope :member, lambda{ |term| joins(:members).where("members.name like ?", "%#{term}%") unless term.blank? }
