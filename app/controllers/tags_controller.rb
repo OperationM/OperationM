@@ -28,7 +28,7 @@ class TagsController < ApplicationController
   # パラメーターで渡ってきたtagを作成して返す
   def create
     @movie = Movie.find(params[:movie])
-    @tag = Tag.create(:name => params[:name])
+    @tag = Tag.find_by_name_or_create(params)
     @movie.tags << @tag
 
     respond_to do |format|
