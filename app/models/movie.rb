@@ -7,7 +7,7 @@ class Movie < ActiveRecord::Base
   has_many :trackkings
   has_many :tracks, :through => :trackkings, :uniq => true
   belongs_to :band
-  belongs_to :live
+  belongs_to :concert
 
   scope :movie, lambda { |term| where("title like ? or description like ?", "%#{term}%", "%#{term}%") unless term.blank? }
   scope :member, lambda{ |term| joins(:members).where("members.name like ?", "%#{term}%") unless term.blank? }
@@ -47,5 +47,20 @@ class Movie < ActiveRecord::Base
       end
     end
     results
+  end
+
+  def update_concert_and_band(params)
+    if params[:movie][:concert][:id] == "New"
+      self.create_concert(:name => params[:movie][:concert][:name])
+    else
+      self.concert = Concert.find(params[:movie][:concert][:id])
+    end
+
+    if params[:movie][:band][:id] == "New"
+      self.create_band(:name => params[:movie][:band][:name])
+    else
+      self.band = Band.find(params[:movie][:band][:id])
+    end
+    return self
   end
 end

@@ -11,20 +11,20 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :live do |l| %>
-    <%= l.label(:id, "Select Live:") %>
-    <%= l.select(:id, Live.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
-    <%= content_tag :div, :id => "new_live_wrapper" do %>
-      <%= l.label(:name, "New Live: ") %>
+  <%= f.fields_for :concert do |l| %>
+    <%= l.label(:id, "Select ConcertName:") %>
+    <%= l.select(:id, Concert.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.concert_id}) %>
+    <%= content_tag :div, :id => "new_concert_wrapper" do %>
+      <%= l.label(:name, "New ConcertName: ") %>
       <%= l.text_field(:name) %>
     <% end %>
   <% end %>
 
   <%= f.fields_for :band do |b| %>
-    <%= b.label(:id, "Select Band:") %>
-    <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
+    <%= b.label(:id, "Select BandName:") %>
+    <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.band_id}) %>
     <%= content_tag :div, :id => "new_band_wrapper" do %>
-      <%= b.label(:name, "New Band: ") %>
+      <%= b.label(:name, "New BandName: ") %>
       <%= b.text_field(:name) %>
     <% end %>
   <% end %>

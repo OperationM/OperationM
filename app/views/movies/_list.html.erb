@@ -11,8 +11,8 @@
         <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
       </td>
       <td>
-        <div><%= movie.title %>(<%= movie.length %>)</div>
-        <div><%= movie.description %></div>
+        <div>ConcertName: <%= movie.concert.name %></div>
+        <div>BandName: <%= movie.band.name %>(<%= movie.length %>)</div>
       </td>
     </tr>
   <% end %>

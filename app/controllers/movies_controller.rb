@@ -59,7 +59,8 @@ class MoviesController < ApplicationController
   # POST   /movies(.:format)
   # フォームから送られてきた内容を登録
   def create
-    @movie = Movie.new(params[:movie])
+    @movie = Movie.new(:video => params[:movie][:video])
+    @movie.update_concert_and_band(params)
 
     respond_to do |format|
       if @movie.save
@@ -76,9 +77,10 @@ class MoviesController < ApplicationController
   # 動画の情報を更新
   def update
     @movie = Movie.find(params[:id])
+    @movie.update_concert_and_band(params)
 
     respond_to do |format|
-      if @movie.update_attributes(params[:movie])
+      if @movie.save
         format.html { redirect_to @movie, notice: 'Movie was successfully updated.' }
         format.json { head :ok }
       else

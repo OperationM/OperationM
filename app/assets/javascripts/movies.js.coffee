@@ -87,7 +87,7 @@ uploadCanceled = (evt) ->
 
 # アプリへのPOST
 postForm = () ->
-  $('#movie_form').submit()
+  $('#new_movie').submit()
   console.log "finish submit"
 
 # ID取得
