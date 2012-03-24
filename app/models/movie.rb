@@ -1,11 +1,11 @@
 # encoding: utf-8
 class Movie < ActiveRecord::Base
 	has_many :taggings
-	has_many :tags, :through => :taggings
+	has_many :tags, :through => :taggings, :uniq => true
   has_many :memberings
-  has_many :members, :through => :memberings
+  has_many :members, :through => :memberings, :uniq => true
   has_many :trackkings
-  has_many :tracks, :through => :trackkings
+  has_many :tracks, :through => :trackkings, :uniq => true
   belongs_to :band
   belongs_to :live
 

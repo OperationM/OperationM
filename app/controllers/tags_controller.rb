@@ -49,7 +49,7 @@ class TagsController < ApplicationController
 
     respond_to do |format|
       if movie.save
-        format.json {render :json => tag}
+        format.json { render :json => tag }
       else
         format.json { render json: movie.errors, status: :unprocessable_entity }
       end

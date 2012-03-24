@@ -1,6 +1,6 @@
 class Track < ActiveRecord::Base
   has_many :trackkings
-  has_many :movies, :through => :trackkings
+  has_many :movies, :through => :trackkings, :uniq => true
   belongs_to :artist
 
   def self.find_by_name_or_create(params)

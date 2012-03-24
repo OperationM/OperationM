@@ -15,7 +15,8 @@ $ ->
     noResultsText: "No results. When you add, please press the enter key or click here.",
     resultsFormatter: tracksFormatResults,
     tokenFormatter: tracksFormatToken,
-    searchDelay: 1000
+    searchDelay: 1000,
+    preventDuplicates: true
     })
 
 # tokenInput callbacks

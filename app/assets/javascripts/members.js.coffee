@@ -11,7 +11,8 @@ $ ->
     onDelete: memberDelete,
     noResultsText: "No results. When you add, please press the enter key or click here.",
     prePopulate: $('#members').data('pre'),
-    tokenFormatter: membersFormatToken
+    tokenFormatter: membersFormatToken,
+    preventDuplicates: true
     })
 
 # tokenInput callback

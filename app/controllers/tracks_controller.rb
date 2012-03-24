@@ -23,7 +23,7 @@ class TracksController < ApplicationController
     
     respond_to do |format|
       if @movie.save
-        format.json {render :json => @track.to_json(:include => [:artist])}
+        format.json { render :json => @track.to_json(:include => [:artist]) }
       else
         format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
@@ -39,7 +39,7 @@ class TracksController < ApplicationController
     
     respond_to do |format|
       if movie.save
-        format.json {render :json => track}
+        format.json { render :json => track }
       else
         format.json { render json: movie.errors, status: :unprocessable_entity }
       end

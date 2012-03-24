@@ -23,7 +23,7 @@ class MembersController < ApplicationController
         
     respond_to do |format|
       if @movie.save
-        format.json {render :json => @member}
+        format.json { render :json => @member }
       else
         format.json { render json: @movie.errors, status: :unprocessable_entity }
       end
@@ -39,7 +39,7 @@ class MembersController < ApplicationController
 
     respond_to do |format|
       if movie.save
-        format.json {render :json => member}
+        format.json { render :json => member }
       else
         format.json { render json: movie.errors, status: :unprocessable_entity }
       end

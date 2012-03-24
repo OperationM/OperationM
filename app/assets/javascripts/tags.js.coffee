@@ -11,7 +11,8 @@ $ ->
     onDelete: tagDeleted,
     noResultsText: "No results. When you add, please press the enter key or click here.",
     prePopulate: $('#tags').data('pre'),
-    tokenFormatter: tagsFormatToken
+    tokenFormatter: tagsFormatToken,
+    preventDuplicates: true
     })
 
 # tokenInput callback
