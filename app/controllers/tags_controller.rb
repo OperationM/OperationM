@@ -15,7 +15,7 @@ class TagsController < ApplicationController
   # tag GET    /tags/:id(.:format)
   # tagに関連付いている動画を返す
   def show
-    @tag = Tag.find_by_id(params[:id])
+    @tag = Tag.find(params[:id])
     @movies = @tag.movies
 
     respond_to do |format|
@@ -28,7 +28,7 @@ class TagsController < ApplicationController
   # パラメーターで渡ってきたtagを作成して返す
   def create
     @tag = Tag.new(:name => params[:name])
-    @movie = Movie.find_by_id(params[:movie])
+    @movie = Movie.find(params[:movie])
     @movie.tags << @tag
     if @tag.save && @movie.save
       respond_to do |format|
@@ -43,8 +43,8 @@ class TagsController < ApplicationController
   # tags GET    /tags(.:format)
   # movieからtagの関連を削除する
   def destroy
-    movie = Movie.find_by_id(params[:movie])
-    tag = Tag.find_by_id(params[:id])
+    movie = Movie.find(params[:movie])
+    tag = Tag.find(params[:id])
     movie.tags.delete(tag)
 
     if movie.save

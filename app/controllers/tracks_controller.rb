@@ -5,7 +5,7 @@ class TracksController < ApplicationController
   # track GET    /tracks/:id(.:format) 
   # 曲に関連づいている動画を返す
   def show
-    @track = Track.find_by_id(params[:id])
+    @track = Track.find(params[:id])
     @movies = @track.movies
 
     respond_to do |format|
@@ -29,7 +29,7 @@ class TracksController < ApplicationController
       @track.art_work_url_30 = params[:artwork]
       @artist.tracks << @track
     end
-    @movie = Movie.find_by_id(params[:movie])
+    @movie = Movie.find(params[:movie])
     @movie.tracks << @track
 
     if @track.save && @artist.save && @movie.save
@@ -45,8 +45,8 @@ class TracksController < ApplicationController
   # DELETE /tracks/:id(.:format)
   # 動画から曲の関連を削除する
   def destroy
-    movie = Movie.find_by_id(params[:movie])
-    track = Track.find_by_id(params[:id])
+    movie = Movie.find(params[:movie])
+    track = Track.find(params[:id])
     movie.tracks.delete(track)
 
     if movie.save
