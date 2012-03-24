@@ -15,8 +15,8 @@
     <%= l.label(:id, "Select Live:") %>
     <%= l.select(:id, Live.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
     <%= content_tag :div, :id => "new_live_wrapper" do %>
-    <%= l.label(:name, "New Live: ") %>
-    <%= l.text_field(:name) %>
+      <%= l.label(:name, "New Live: ") %>
+      <%= l.text_field(:name) %>
     <% end %>
   <% end %>
 
@@ -24,14 +24,18 @@
     <%= b.label(:id, "Select Band:") %>
     <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New")) %>
     <%= content_tag :div, :id => "new_band_wrapper" do %>
-    <%= b.label(:name, "New Band: ") %>
-    <%= b.text_field(:name) %>
+      <%= b.label(:name, "New Band: ") %>
+      <%= b.text_field(:name) %>
     <% end %>
   <% end %>
 
   <% if !@movie.source %>
     <%= render "video" %>
+    <div class="row">
+      <input id="start_upload" type="button" value="Upload" />
+    </div>
   <% else %>
     <%= submit_tag "Update" %>
   <% end %>
+  
 <% end %>

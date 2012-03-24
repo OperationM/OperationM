@@ -2,22 +2,22 @@
 <%= render :partial => 'movies/list', :locals => {:movies => @movies} %>
 
 <%= content_tag :div do %>
-<% tags = Tag.all %>
-<% tags.each do |tag| %>
-  <%= link_to tag.name, tag_path(tag) %>
-<% end %>
-<% end %>
-
-<%= content_tag :div do %>
-<% members = Member.all %>
-<% members.each do |member| %>
-  <%= link_to member.name, member_path(member) %>
-<% end %>
+  <% tags = Tag.all %>
+  <% tags.each do |tag| %>
+    <%= link_to tag.name, tag_path(tag) %>
+  <% end %>
 <% end %>
 
 <%= content_tag :div do %>
-<% tracks = Track.all %>
-<% tracks.each do |track| %>
-  <%= link_to track.name, track_path(track) %>
+  <% members = Member.all %>
+  <% members.each do |member| %>
+    <%= link_to member.name, member_path(member) %>
+  <% end %>
 <% end %>
+
+<%= content_tag :div do %>
+  <% tracks = Track.all %>
+  <% tracks.each do |track| %>
+    <%= link_to track.name, track_path(track) %>
+  <% end %>
 <% end %>
