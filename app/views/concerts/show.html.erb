@@ -1,2 +1,2 @@
-<h1>Concerts#show</h1>
-<p>Find me in app/views/concerts/show.html.erb</p>
+<%= content_tag(:h1, "Moives have concert: #{@concert.name}") %>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>

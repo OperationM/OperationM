@@ -1,2 +1,2 @@
-<h1>Bands#show</h1>
-<p>Find me in app/views/bands/show.html.erb</p>
+<%= content_tag(:h1, "Moives have band: #{@band.name}") %>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>

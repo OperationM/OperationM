@@ -9,13 +9,14 @@ class Movie < ActiveRecord::Base
   belongs_to :band
   belongs_to :concert
 
-  scope :movie, lambda { |term| where("title like ? or description like ?", "%#{term}%", "%#{term}%") unless term.blank? }
   scope :member, lambda{ |term| joins(:members).where("members.name like ?", "%#{term}%") unless term.blank? }
   scope :tag, lambda{ |term| joins(:tags).where("tags.name like ?", "%#{term}%") unless term.blank? }
   scope :track, lambda{ |term| joins(:tracks).where("tracks.name like ?", "%#{term}%") unless term.blank? }
   scope :artist, lambda{ |term| joins(:tracks => :artist).where("artists.name like ?", "%#{term}%") unless term.blank? }
+  scope :concert, lambda { |term| joins(:cencerts).where("concerts.name like ?", "%#{term}%") unless term.blank? }
+  scope :band, lambda { |term| joins(:bands).where("bands.name like ?", "%#{term}%") unless term.blank? }
 
-  def self.search(term = nil, scopes = [:movie, :member, :tag, :track, :artist], unique = true)
+  def self.search(term = nil, scopes = [:member, :tag, :track, :artist, :concert, :band], unique = true)
     words = Array.new
     words = term.gsub(/　/," ").split(nil)
     if unique

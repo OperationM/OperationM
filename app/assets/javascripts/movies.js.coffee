@@ -14,6 +14,35 @@ $ ->
 $ -> 
   $('#only_sync').live('change', changeVideoField)
 
+# ライブ名選択用のセレクトボックス
+$ ->
+  $('#movie_concert_id').live('change', toggleCocertSelection)
+
+# バンド名選択用のセレクトボックス
+$ ->
+  $('#movie_band_id').live('change', toggleBandSelection)
+
+# document.ready
+$ ->
+  toggleCocertSelection()
+  toggleBandSelection()
+
+# Concert入力用のセレクトボックスが選択された時
+toggleCocertSelection = () ->
+  index = this.selectedIndex
+  if index > 0
+    $('#new_concert_wrapper').hide('fast')
+  else
+    $('#new_concert_wrapper').show('fast')
+
+# Band入力用のセレクトボックスが選択された時  
+toggleBandSelection = () ->
+  index = this.selectedIndex
+  if index > 0
+    $('#new_band_wrapper').hide('fast')
+  else
+    $('#new_band_wrapper').show('fast')
+
 # ファイルが選択された時にファイルの情報を表示
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]

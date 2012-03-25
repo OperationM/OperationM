@@ -1,5 +1,5 @@
 <p id="notice"><%= notice %></p>
-<%= content_tag(:h1, "#{@movie.title}") %>
+<%= content_tag(:h1, link_to("#{@movie.band.name}", band_path(@movie.band))+"@"+link_to("#{@movie.concert.name}", concert_path(@movie.concert))) %>
 
 <%= content_tag :div do %>
   <object width="720" height="480" >
