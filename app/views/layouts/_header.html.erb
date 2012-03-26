@@ -1,7 +1,29 @@
 <header>
-	<%= link_to logo, root_path %>
-  <%= form_tag(url_for(:controller => 'movies', :action => 'search'), :id => "search_field") do %>
-    <%= text_field_tag :search_input, '', :size => '40' %>
-    <%= button_tag :search %>
+<%= content_tag :div, :class => "navbar navbar-fixed-top" do %>
+  <%= content_tag :div, :class => "navbar-inner" do %>
+    <%= content_tag :div, :class => "container" do %>
+      <%= link_to "Moogle", root_path, :class => "brand" %>
+      <%= content_tag :ul , :class => "nav pull-left" do %>
+        <%= content_tag(:li, link_to("Home", root_path)) %>
+        <%= content_tag(:li, link_to("Help", help_path)) %>
+        <%= content_tag(:li, link_to("About", about_path)) %>
+        <%= content_tag(:li, "", :class => "divider-vertical") %>
+      <% end %>
+      <%= form_tag(url_for(:controller => 'movies', :action => 'search'), :id => "search_field", :class => "navbar-search pull-left") do %>
+        <%= text_field_tag :search_input, '', :class => "search-query", :placeholder => "Search", :class => "span4" %>
+      <% end %>
+      <%= content_tag :ul , :class => "nav pull-right" do %>
+        <% if admin? %>
+        <%= content_tag(:li, link_to("New Movie", new_movie_path)) %>
+        <% end %>
+        <%= content_tag(:li, "", :class => "divider-vertical") %>
+        <% if member? %>
+        <%= content_tag(:li, link_to("Log out", logout_path)) %>
+        <% else %>
+        <%= content_tag(:li, link_to("Log in", "/auth/facebook")) %>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
+<% end %>
 </header>
