@@ -29,19 +29,25 @@ $ ->
 
 # Concert入力用のセレクトボックスが選択された時
 toggleCocertSelection = () ->
-  index = this.selectedIndex
-  if index > 0
-    $('#new_concert_wrapper').hide('fast')
-  else
-    $('#new_concert_wrapper').show('fast')
+  select_box = $('#movie_concert_id')
+  wrapper = $('#new_concert_wrapper')
+  if select_box.size() > 0
+    index = select_box.get(0).selectedIndex
+    if index > 0
+      wrapper.hide('fast')
+    else
+      wrapper.show('fast')
 
 # Band入力用のセレクトボックスが選択された時  
 toggleBandSelection = () ->
-  index = this.selectedIndex
-  if index > 0
-    $('#new_band_wrapper').hide('fast')
-  else
-    $('#new_band_wrapper').show('fast')
+  select_box = $('#movie_band_id')
+  wrapper = $('#new_band_wrapper')
+  if select_box.size() > 0
+    index = select_box.get(0).selectedIndex
+    if index > 0
+      wrapper.hide('fast')
+    else
+      wrapper.show('fast')
 
 # ファイルが選択された時にファイルの情報を表示
 fileInfo = () ->
