@@ -8,19 +8,97 @@
         <%= content_tag(:li, link_to("Help", help_path)) %>
         <%= content_tag(:li, link_to("About", about_path)) %>
         <%= content_tag(:li, "", :class => "divider-vertical") %>
-      <% end %>
-      <%= form_tag(url_for(:controller => 'movies', :action => 'search'), :id => "search_field", :class => "navbar-search pull-left") do %>
-        <%= text_field_tag :search_input, '', :class => "search-query", :placeholder => "Search", :class => "span4" %>
-      <% end %>
-      <%= content_tag :ul , :class => "nav pull-right" do %>
-        <% if admin? %>
-        <%= content_tag(:li, link_to("New Movie", new_movie_path)) %>
+        <% if member? %>
+          <%= content_tag :ul, :class => "nav" do %>
+            <%= content_tag :li, :class => "dropdown" do %>
+              <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                Tag<b class="caret"></b>
+              <% end %>
+              <%= content_tag :ul, :class => "dropdown-menu" do %>
+                <% tags = Tag.all %>
+                <% tags.each do |tag| %>
+                  <%= content_tag(:li, link_to(tag.name, tag_path(tag))) %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= content_tag :ul, :class => "nav" do %>
+            <%= content_tag :li, :class => "dropdown" do %>
+              <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                Player<b class="caret"></b>
+              <% end %>
+              <%= content_tag :ul, :class => "dropdown-menu" do %>
+                <% members = Member.all %>
+                <% members.each do |member| %>
+                  <%= content_tag(:li, link_to(member.name, member_path(member))) %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= content_tag :ul, :class => "nav" do %>
+            <%= content_tag :li, :class => "dropdown" do %>
+              <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                Music<b class="caret"></b>
+              <% end %>
+              <%= content_tag :ul, :class => "dropdown-menu" do %>
+                <% tracks = Track.all %>
+                <% tracks.each do |track| %>
+                  <%= content_tag(:li, link_to(track.name, track_path(track))) %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= content_tag :ul, :class => "nav" do %>
+            <%= content_tag :li, :class => "dropdown" do %>
+              <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                Concert<b class="caret"></b>
+              <% end %>
+              <%= content_tag :ul, :class => "dropdown-menu" do %>
+                <% concerts = Concert.all %>
+                <% concerts.each do |concert| %>
+                  <%= content_tag(:li, link_to(concert.name, concert_path(concert))) %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= content_tag :ul, :class => "nav" do %>
+            <%= content_tag :li, :class => "dropdown" do %>
+              <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                Band<b class="caret"></b>
+              <% end %>
+              <%= content_tag :ul, :class => "dropdown-menu" do %>
+                <% bands = Band.all %>
+                <% bands.each do |band| %>
+                  <%= content_tag(:li, link_to(band.name, band_path(band))) %>
+                <% end %>
+              <% end %>
+            <% end %>
+          <% end %>
+          <%= form_tag(url_for(:controller => 'movies', :action => 'search'), :id => "search_field", :class => "navbar-search pull-left") do %>
+            <%= text_field_tag :search_input, '', :class => "search-query", :placeholder => "Search", :class => "span3" %>
+          <% end %>
         <% end %>
+      <% end %>
+
+      <%= content_tag :ul , :class => "nav pull-right" do %>
         <%= content_tag(:li, "", :class => "divider-vertical") %>
         <% if member? %>
-        <%= content_tag(:li, link_to("Log out", logout_path)) %>
+        <%= content_tag :ul, :class => "nav" do %>
+          <%= content_tag :li, :class => "dropdown" do %>
+            <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
+                <%= current_user.name %><b class="caret"></b>
+            <% end %>
+            <%= content_tag :ul, :class => "dropdown-menu" do %>
+              <%= content_tag(:li, link_to("Log out", logout_path)) %>
+              <% if admin? %>
+              <%= content_tag(:li, "", :class => "divider") %>
+              <%= content_tag(:li, link_to("New Movie", new_movie_path)) %>
+              <% end %>
+            <% end %>
+          <% end %>
+        <% end %>
         <% else %>
-        <%= content_tag(:li, link_to("Log in", "/auth/facebook")) %>
+        <%= content_tag(:li, link_to("Log in with facebook", "/auth/facebook")) %>
         <% end %>
       <% end %>
     <% end %>
