@@ -6,7 +6,6 @@
       <%= content_tag :ul , :class => "nav pull-left" do %>
         <%= content_tag(:li, link_to("Home", root_path)) %>
         <%= content_tag(:li, link_to("Help", help_path)) %>
-        <%= content_tag(:li, link_to("About", about_path)) %>
         <%= content_tag(:li, "", :class => "divider-vertical") %>
         <% if member? %>
           <%= content_tag :ul, :class => "nav" do %>
