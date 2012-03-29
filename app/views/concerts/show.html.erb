@@ -1,2 +1,1 @@
-<%= content_tag(:h3, "#{@concert.name}") %>
-<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies, :list_title => @concert.name} %>

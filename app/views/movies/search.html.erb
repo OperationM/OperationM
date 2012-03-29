@@ -1,2 +1,1 @@
-<%= content_tag(:h1, "Search results for '#{@keyword}'") %>
-<%= render :partial => 'movies/list', :locals => {:movies => @movies} %>
+<%= render :partial => 'movies/list', :locals => {:movies => @movies, :list_title => "SearchResult"} %>
