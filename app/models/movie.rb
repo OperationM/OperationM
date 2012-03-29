@@ -16,6 +16,8 @@ class Movie < ActiveRecord::Base
   scope :concert, lambda { |term| joins(:concerts).where("concerts.name like ?", "%#{term}%") unless term.blank? }
   scope :band, lambda { |term| joins(:bands).where("bands.name like ?", "%#{term}%") unless term.blank? }
 
+  paginates_per 4
+
   def self.search(term = nil, scopes = [:member, :tag, :track, :artist, :concert, :band], unique = true)
     words = Array.new
     words = term.gsub(/　/," ").split(nil)

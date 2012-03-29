@@ -17,7 +17,7 @@ class MoviesController < ApplicationController
   # 動画一覧表示
   def index
     fetch_movie_src
-    @movies = Movie.all
+    @movies = Movie.scoped.page params[:page]
 
     respond_to do |format|
       format.html # index.html.erb

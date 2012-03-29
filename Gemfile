@@ -7,7 +7,8 @@ gem 'faraday'
 gem 'gon'
 gem 'execjs'
 gem 'therubyracer'
-gem "twitter-bootstrap-rails"
+gem 'twitter-bootstrap-rails'
+gem 'kaminari'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
