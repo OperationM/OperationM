@@ -1,22 +1,25 @@
-<table>
-  <tr>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% movies.each do |movie| %>
-  <% if movie.source %>
-    <tr>
-      <td>
-        <div><%= link_to(image_tag(movie.picture, alt: movie.source), movie) %></div>
-      </td>
-      <td>
-        <div>Band: <%= link_to movie.band.name, band_path(movie.band) %>(<%= movie.length %>)</div>
-        <div>Concert: <%= link_to movie.concert.name, concert_path(movie.concert) %></div>
-      </td>
-    </tr>
+<%= content_tag :table, :class => "table table-condensed" do %>
+  <%= content_tag :thead do %>
+    <%= content_tag :tr do %>
+      <%= content_tag :th do %>
+        <%= content_tag :h3 do %>
+          <%= content_tag :i, "", :class => "icon-list" %>
+          <%= list_title %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= content_tag :tbody do %>
+    <% movies.each do |movie| %>
+      <% if movie.source %>
+        <%= content_tag :tr do %>
+          <%= content_tag :th, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
+            <%= content_tag :div do %>
+              <%= link_to(image_tag(movie.picture), movie, :id => "movie-thumbnail", :remote => true) %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>
-
-</table>
-<br />

@@ -26,6 +26,20 @@ $ ->
 $ ->
   toggleCocertSelection()
   toggleBandSelection()
+  $('.movie-list').popover()
+
+$ ->
+  $('#movie-thumbnail')
+    .live("ajax:complete", (xhr)->
+    )
+    .live("ajax:beforeSend", (xhr)->
+    )
+    .live("ajax:success", (event, data, status, xhr)->
+      $('#movie-view').empty().append(data.html)
+    )
+    .live("ajax:error", (data, status, xhr)->
+      console.log "error"
+    )
 
 # Concert入力用のセレクトボックスが選択された時
 toggleCocertSelection = () ->
