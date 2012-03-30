@@ -1,12 +1,7 @@
 <%= content_tag :section do %>
   <%= content_tag :div, :class => "container-fluid" do %>
     <%= content_tag :div, :class => "row-fluid" do %>
-      <%= content_tag :div, :class => "span2" do %>
-        <%= yield %>        
-      <% end %>
-      <%= content_tag :div, :class => "span8" do %>
-        <%= content_tag :div, "", :id => "movie-view" %>
-      <% end %>
+      <%= yield %>        
     <% end %>
   <% end %>
 <% end %>

@@ -33,9 +33,8 @@ class MoviesController < ApplicationController
     gon.movie_id = @movie.id
 
     respond_to do |format|
-      # format.html # show.html.erb
-      html = render_to_string :partial => "view"
-      format.json { render json: {:success => 1, :html => html} }
+      format.html # show.html.erb
+      format.json { render json: @movie}
     end
   end
 

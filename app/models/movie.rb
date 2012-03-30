@@ -13,10 +13,8 @@ class Movie < ActiveRecord::Base
   scope :tag, lambda{ |term| joins(:tags).where("tags.name like ?", "%#{term}%") unless term.blank? }
   scope :track, lambda{ |term| joins(:tracks).where("tracks.name like ?", "%#{term}%") unless term.blank? }
   scope :artist, lambda{ |term| joins(:tracks => :artist).where("artists.name like ?", "%#{term}%") unless term.blank? }
-  scope :concert, lambda { |term| joins(:concerts).where("concerts.name like ?", "%#{term}%") unless term.blank? }
-  scope :band, lambda { |term| joins(:bands).where("bands.name like ?", "%#{term}%") unless term.blank? }
-
-  paginates_per 4
+  scope :concert, lambda { |term| joins(:concert).where("concerts.name like ?", "%#{term}%") unless term.blank? }
+  scope :band, lambda { |term| joins(:band).where("bands.name like ?", "%#{term}%") unless term.blank? }
 
   def self.search(term = nil, scopes = [:member, :tag, :track, :artist, :concert, :band], unique = true)
     words = Array.new
