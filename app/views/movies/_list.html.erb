@@ -1,24 +1,18 @@
-<%= content_tag :div, :class => "span4" do %>
-  <%= content_tag :table, :class => "table table-condensed" do %>
-    <%= content_tag :thead do %>
-      <%= content_tag :tr do %>
-        <%= content_tag :th do %>
-          <%= content_tag :h3 do %>
-            <%= content_tag :i, "", :class => "icon-list" %>
-            <%= list_title %>
-          <% end %>
-        <% end %>
-      <% end %>
+<%= content_tag :div, :class => "span6" do %>
+  <%= content_tag :div, :class => "page-header" do %>
+    <%= content_tag :h3 do %>
+      <%= content_tag :i, "", :class => "icon-list" %>
+      <%= list_title %>
     <% end %>
-    <%= content_tag :tbody do %>
-      <% movies.each do |movie| %>
-        <% if movie.source %>
-          <%= content_tag :tr do %>
-            <%= content_tag :th, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
-              <%= content_tag :div do %>
-                <%= link_to(image_tag(movie.picture), movie, :id => "movie-thumbnail") %>
-              <% end %>
-            <% end %>
+  <% end %>
+  <%= content_tag :ul, :class => "thumbnails" do %>
+    <% movies.each do |movie| %>
+      <% if movie.source %>
+        <%= content_tag :li do %>
+          <%= content_tag :div, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
+            <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span1", :id => "movie-thumbnail") %>
+            <%= content_tag :span, "", :class => "overlay" %>
+            <%= content_tag :span, movie.length, :class => "movie-lenght" %>
           <% end %>
         <% end %>
       <% end %>
