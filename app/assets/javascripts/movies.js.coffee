@@ -26,7 +26,7 @@ $ ->
 $ ->
   toggleCocertSelection()
   toggleBandSelection()
-  $('.movie-list').popover()
+  $('.movie-list').popover({placement: 'top'})
   $('#graph_object').hide()
   $('.progress').hide()
 
