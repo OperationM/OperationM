@@ -27,6 +27,8 @@ $ ->
   toggleCocertSelection()
   toggleBandSelection()
   $('.movie-list').popover()
+  $('#graph_object').hide()
+  $('.progress').hide()
 
 $ ->
   $('#movie-thumbnail')
@@ -72,22 +74,16 @@ fileInfo = () ->
       fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
     else
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-    $('#file_name').html('Name: ' + file.name)
-    $('#file_size').html('Size: ' + fileSize)
-    $('#file_type').html('Type: ' + file.type)
 
 # MoogleへのPOSTのみにするかどうかのトグルスイッチ
 changeVideoField = () ->
   checked = $('#only_sync').attr('checked')
-  $('#sync').empty()
   if checked
-    $('#sync').append('<div class="field"><label for="graph_object">Graph object</label><br><input id="movie_video" name="movie[video]" type="text" value=""></div>');
+    $('#sync').hide()
+    $('#graph_object').show()
   else
-    $('#sync').append('<div class="field"><label for="attachment">Attachment</label><br><input id="file_upload" name="file[upload]" type="file"></div>');
-    $('#sync').append('<div id="file_name"></div>');
-    $('#sync').append('<div id="file_size"></div>');
-    $('#sync').append('<div id="file_type"></div>');
-    $('#sync').append('<div id="progress_number"></div>');
+    $('#sync').show()
+    $('#graph_object').hide()
 
 # アップロードボタンが押された時の処理
 startUpload = () ->
@@ -97,6 +93,7 @@ startUpload = () ->
     postForm()
   else
     console.log "post video before post moogle"
+    $('.progress').show()
     xhr = new XMLHttpRequest()
     xhr.upload.addEventListener("progress", uploadProgress, false)
     xhr.addEventListener("load", uploadComplete, false)
@@ -116,13 +113,13 @@ startUpload = () ->
 uploadProgress = (evt) ->
   if evt.lengthComputable
     percentComplete = Math.round(evt.loaded * 100 / evt.total)
-    $('#progress_number').html(percentComplete.toString() + '%')
+    $('#progress_number').css('width', percentComplete.toString() + '%')
   else
     $('#progress_number').html('unable to compute')
 
 # アップロードが完了した時の処理
 uploadComplete = (evt) ->
-  $('#sync').empty().append('<div class="field"><label for="graph_object">Graph object</label><br><input id="movie_video" name="movie[video]" type="text" value=""></div>');
+  $('#sync').empty()
   $('#movie_video').val(parseID(evt.target.responseText))
   postForm()
 

@@ -1,4 +1,4 @@
-<%= form_for(@movie) do |f| %>
+<%= form_for @movie, :html => {:class => "form-horizontal"} do |f| %>
   <% if @movie.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@movie.errors.count, "error") %> prohibited this post from being saved:</h2>
@@ -11,33 +11,45 @@
     </div>
   <% end %>
 
-  <%= f.fields_for :concert do |l| %>
-    <%= content_tag :div, :class => "field" do %>
-      <%= l.label(:id, "Concert:") %>
-      <%= l.select(:id, Concert.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.concert_id}) %>
-      <%= content_tag :div, :id => "new_concert_wrapper" do %>
-        <%= l.text_field(:name) %>
+  <%= content_tag :fieldset do %>
+    <%= content_tag :legend, legend %>
+    <%= f.fields_for :concert do |l| %>
+      <%= content_tag :div, :class => "control-group" do %>
+        <%= l.label(:id, "Concert", :class => "control-label") %>
+        <%= content_tag :div, :class => "controls" do %>
+          <%= l.select(:id, Concert.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.concert_id}) %>
+          <%= content_tag :div, :id => "new_concert_wrapper" do %>
+            <%= l.text_field(:name) %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
 
-  <%= f.fields_for :band do |b| %>
-    <%= content_tag :div, :class => "field" do %>
-      <%= b.label(:id, "Band:") %>
-      <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.band_id}) %>
-      <%= content_tag :div, :id => "new_band_wrapper" do %>
-        <%= b.text_field(:name) %>
+    <%= f.fields_for :band do |b| %>
+      <%= content_tag :div, :class => "control-group" do %>
+        <%= b.label(:id, "Band", :class => "control-label") %>
+        <%= content_tag :div, :class => "controls" do %>
+          <%= b.select(:id, Band.all.collect {|p| [p.name, p.id]}.insert(0, "New"), {:selected => @movie.band_id}) %>
+          <%= content_tag :div, :id => "new_band_wrapper" do %>
+            <%= b.text_field(:name) %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
 
-  <% if !@movie.source %>
-    <%= render "video" %>
-    <%= content_tag :div, :class => "row" do %>
-      <%= button_tag "Upload", :id => "start_upload", :type => "button" %>
+    <% if !@movie.source %>
+      <%= render "video" %>
     <% end %>
-  <% else %>
-    <%= submit_tag "Update" %>
+
+    <%= content_tag :div, :class => "form-actions" do %>
+      <% if !@movie.source %>
+        <%= button_tag "Upload", :id => "start_upload", :class => "btn btn-primary", :type => "button" %>
+      <% else %>
+        <%= submit_tag "Update", :class => "btn btn-primary" %>
+      <% end %>
+      <%= link_to 'Cancel', movies_path, :class => "btn" %>
+    <% end %>
+    
   <% end %>
 
 <% end %>

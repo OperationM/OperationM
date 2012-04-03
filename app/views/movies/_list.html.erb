@@ -11,8 +11,6 @@
         <%= content_tag :li do %>
           <%= content_tag :div, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
             <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span1", :id => "movie-thumbnail") %>
-            <%= content_tag :span, "", :class => "overlay" %>
-            <%= content_tag :span, movie.length, :class => "movie-lenght" %>
           <% end %>
         <% end %>
       <% end %>
