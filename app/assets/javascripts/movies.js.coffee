@@ -14,6 +14,57 @@ $ ->
 $ -> 
   $('#only_sync').live('change', changeVideoField)
 
+# ライブ名選択用のセレクトボックス
+$ ->
+  $('#movie_concert_id').live('change', toggleCocertSelection)
+
+# バンド名選択用のセレクトボックス
+$ ->
+  $('#movie_band_id').live('change', toggleBandSelection)
+
+# document.ready
+$ ->
+  toggleCocertSelection()
+  toggleBandSelection()
+  $('.movie-list').popover({placement: 'top'})
+  $('#graph_object').hide()
+  $('.progress').hide()
+
+$ ->
+  $('#movie-thumbnail')
+    .live("ajax:complete", (xhr)->
+    )
+    .live("ajax:beforeSend", (xhr)->
+    )
+    .live("ajax:success", (event, data, status, xhr)->
+      $('#movie-view').empty().append(data.html)
+    )
+    .live("ajax:error", (data, status, xhr)->
+      console.log "error"
+    )
+
+# Concert入力用のセレクトボックスが選択された時
+toggleCocertSelection = () ->
+  select_box = $('#movie_concert_id')
+  wrapper = $('#new_concert_wrapper')
+  if select_box.size() > 0
+    index = select_box.get(0).selectedIndex
+    if index > 0
+      wrapper.hide('fast')
+    else
+      wrapper.show('fast')
+
+# Band入力用のセレクトボックスが選択された時  
+toggleBandSelection = () ->
+  select_box = $('#movie_band_id')
+  wrapper = $('#new_band_wrapper')
+  if select_box.size() > 0
+    index = select_box.get(0).selectedIndex
+    if index > 0
+      wrapper.hide('fast')
+    else
+      wrapper.show('fast')
+
 # ファイルが選択された時にファイルの情報を表示
 fileInfo = () ->
   file = $("#file_upload").prop('files')[0]
@@ -23,22 +74,16 @@ fileInfo = () ->
       fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
     else
       fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-    $('#file_name').html('Name: ' + file.name)
-    $('#file_size').html('Size: ' + fileSize)
-    $('#file_type').html('Type: ' + file.type)
 
 # MoogleへのPOSTのみにするかどうかのトグルスイッチ
 changeVideoField = () ->
   checked = $('#only_sync').attr('checked')
-  $('#sync').empty()
   if checked
-    $('#sync').append('<div class="field"><label for="graph_object">Graph object</label><br><input id="movie_video" name="movie[video]" type="text" value=""></div>');
+    $('#sync').hide()
+    $('#graph_object').show()
   else
-    $('#sync').append('<div class="field"><label for="attachment">Attachment</label><br><input id="file_upload" name="file[upload]" type="file"></div>');
-    $('#sync').append('<div id="file_name"></div>');
-    $('#sync').append('<div id="file_size"></div>');
-    $('#sync').append('<div id="file_type"></div>');
-    $('#sync').append('<div id="progress_number"></div>');
+    $('#sync').show()
+    $('#graph_object').hide()
 
 # アップロードボタンが押された時の処理
 startUpload = () ->
@@ -48,6 +93,7 @@ startUpload = () ->
     postForm()
   else
     console.log "post video before post moogle"
+    $('.progress').show()
     xhr = new XMLHttpRequest()
     xhr.upload.addEventListener("progress", uploadProgress, false)
     xhr.addEventListener("load", uploadComplete, false)
@@ -67,13 +113,13 @@ startUpload = () ->
 uploadProgress = (evt) ->
   if evt.lengthComputable
     percentComplete = Math.round(evt.loaded * 100 / evt.total)
-    $('#progress_number').html(percentComplete.toString() + '%')
+    $('#progress_number').css('width', percentComplete.toString() + '%')
   else
     $('#progress_number').html('unable to compute')
 
 # アップロードが完了した時の処理
 uploadComplete = (evt) ->
-  $('#sync').empty().append('<div class="field"><label for="graph_object">Graph object</label><br><input id="movie_video" name="movie[video]" type="text" value=""></div>');
+  $('#sync').empty()
   $('#movie_video').val(parseID(evt.target.responseText))
   postForm()
 
@@ -87,7 +133,7 @@ uploadCanceled = (evt) ->
 
 # アプリへのPOST
 postForm = () ->
-  $('#movie_form').submit()
+  $('#new_movie').submit()
   console.log "finish submit"
 
 # ID取得

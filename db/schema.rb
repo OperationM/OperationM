@@ -11,9 +11,21 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120317120516) do
+ActiveRecord::Schema.define(:version => 20120330002722) do
 
   create_table "artists", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "bands", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "concerts", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -36,12 +48,12 @@ ActiveRecord::Schema.define(:version => 20120317120516) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "video"
-    t.string   "title"
-    t.string   "description"
     t.string   "source"
     t.string   "length"
     t.string   "picture"
     t.string   "meta"
+    t.integer  "band_id"
+    t.integer  "concert_id"
   end
 
   create_table "omniusers", :force => true do |t|

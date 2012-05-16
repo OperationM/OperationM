@@ -1,0 +1,19 @@
+<%= content_tag :div, :class => "span12" do %>
+  <%= content_tag :div, :class => "page-header" do %>
+    <%= content_tag :h3 do %>
+      <%= content_tag :i, "", :class => "icon-list" %>
+      <%= list_title %>
+    <% end %>
+  <% end %>
+  <%= content_tag :ul, :class => "thumbnails" do %>
+    <% movies.each do |movie| %>
+      <% if movie.source %>
+        <%= content_tag :li do %>
+          <%= content_tag :div, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
+            <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span1", :id => "movie-thumbnail") %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

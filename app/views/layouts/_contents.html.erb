@@ -1,3 +1,7 @@
-<section>
-	<%= yield %>
-</section>
+<%= content_tag :section do %>
+  <%= content_tag :div, :class => "container-fluid" do %>
+    <%= content_tag :div, :class => "row-fluid" do %>
+      <%= yield %>        
+    <% end %>
+  <% end %>
+<% end %>

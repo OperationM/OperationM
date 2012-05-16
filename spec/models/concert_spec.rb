@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "member/destroy.html.erb" do
+describe Concert do
   pending "add some examples to (or delete) #{__FILE__}"
 end
