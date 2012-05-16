@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe "tracks/create.html.erb" do
+describe Band do
   pending "add some examples to (or delete) #{__FILE__}"
 end
