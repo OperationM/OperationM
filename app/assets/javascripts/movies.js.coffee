@@ -94,19 +94,39 @@ startUpload = () ->
   else
     console.log "post video before post moogle"
     $('.progress').show()
+    $.ajax({
+      type: 'GET'
+      url: "https://graph.facebook.com/me/accounts?access_token="+gon.token
+      dataType: 'json'
+      success: (data, dataType) ->
+        get_app_access_token(data, dataType)
+      error: (XMLHttpRequest, textStatus, errorThrown) ->
+        console.log XMLHttpRequest
+        console.log textStatus
+        console.log errorThrown
+      })
+
+get_app_access_token = (data, dataType) ->
+  console.log data.data
+  app_id = "253970248019703"
+  for obj in data.data
+    if obj.id == app_id
+      moogle_access_token = obj.access_token
+
+  if moogle_access_token    
+    title = ""
+    description = ""
+    upload_url = "https://graph-video.facebook.com/"+app_id+"/videos?access_token="+moogle_access_token
+    fd = new FormData()
+    fd.append("fileToUpload", $('#file_upload').prop('files')[0])
+    fd.append("title", title)
+    fd.append("description", description)
     xhr = new XMLHttpRequest()
     xhr.upload.addEventListener("progress", uploadProgress, false)
     xhr.addEventListener("load", uploadComplete, false)
     xhr.addEventListener("error", uploadFailed, false)
     xhr.addEventListener("abort", uploadCanceled, false)
-    fd = new FormData()
-    fd.append("fileToUpload", $('#file_upload').prop('files')[0])
-    base_url = "https://graph-video.facebook.com/387659801250930/videos"
-    title = uuid()
-    description = "moogle"
-    post_url = base_url + "?title=" + title + "&description=" + description + "&access_token=" + gon.token
-    console.log post_url
-    xhr.open("POST", post_url)
+    xhr.open("POST", upload_url)
     xhr.send(fd)
 
 # 動画をアップロードする際のブログレス表示
@@ -119,6 +139,7 @@ uploadProgress = (evt) ->
 
 # アップロードが完了した時の処理
 uploadComplete = (evt) ->
+  console.log evt
   $('#sync').empty()
   $('#movie_video').val(parseID(evt.target.responseText))
   postForm()

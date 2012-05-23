@@ -47,6 +47,33 @@ class ApplicationController < ActionController::Base
     return redirect_to '/404.html' unless request.xhr?
   end
 
+  def https_get(domain,path,params)
+    require 'net/http'
+    require 'net/https'
+    https = Net::HTTP.new("graph.facebook.com", 443)
+    https.use_ssl = true
+    https.ca_file = "#{$RAILS_ROOT}/cacert.pem"
+    https.verify_mode = OpenSSL::SSL::VERIFY_PEER
+    https.verify_depth = 5
+
+    path = unless params.empty?
+      path + "?" + params.collect { |k,v| "#{k}=#{CGI::escape(v.to_s)}" }.join('&')
+    else
+      path
+    end
+    resp, data = https.get(path, params)
+  end
+
+  def get_movie_info(video_id)
+    params = {
+      "q" => "SELECT length, src_hq, src, vid, thumbnail_link, updated_time, created_time FROM video WHERE vid= #{video_id}",
+      "format" => 'json',
+      "access_token" => "#{current_user.access_token}"
+    }
+    response = https_get('graph.facebook.com', '/fql', params)
+    response.body
+  end
+
   def fetch_movie_src
     ###### feed更新時のpush通知に対応までの暫定対処(FeedFetch版)
     ###### 問題点１：index.html.erbロード時にfetchするので表示が遅くなる
@@ -56,54 +83,15 @@ class ApplicationController < ActionController::Base
     logger.debug "not_yet: #{not_yet}"
     # 空じゃなかったらFBに更新されているか探しにいく
     unless not_yet.blank?
-      # HTTPSリクエスト用のオブジェクト用意
-      require 'net/https'
-      https = Net::HTTP.new("graph.facebook.com", 443)
-      https.use_ssl = true
-      # Herokuにあげる時はこれはいらないはず
-      https.ca_file = "#{$RAILS_ROOT}/cacert.pem"
-      https.verify_mode = OpenSSL::SSL::VERIFY_PEER
-      https.verify_depth = 5
-      # リクエスト開始
-      https.start do |w|
-        # Operation_M_testグループのfeedを取得
-        response = w.get("/387659801250930/feed?fields=id,object_id,picture,source,properties&access_token=#{current_user.access_token}")
-        logger.debug "resonse: #{response}"
-        # feedから投稿完了時に返ってきたobject_idとひもづく投稿idを取得して対応をハッシュに保持
-        feed = JSON.parse(response.body)
-        logger.debug "feed: #{feed}"
-        video_meta_id = Hash.new
-        feed.each do |rk, rh|
-          if rk == "data"
-            rh.each do |item|
-              if item.has_key?("object_id")
-                video_meta_id[item["object_id"]] = item["id"]
-              end
-            end
-          end
-        end
-        # development.logに対応表を出力
-        logger.debug "video_meta_id: #{video_meta_id}"
-        # sourceが設定されていないmovieオブジェクトにfeedからいろいろ設定していく
-        not_yet.each do |movie|
-          if video_meta_id.has_key?(movie.video)
-            response = w.get("/#{video_meta_id[movie.video]}?access_token=#{current_user.access_token}")
-            video_info = JSON.parse(response.body)
-            logger.debug "#{movie.video}->meta: #{video_meta_id[movie.video]}"
-            movie.meta = video_meta_id[movie.video]
-            logger.debug "#{movie.video}->picture: #{video_info["picture"]}"
-            movie.picture = video_info["picture"]
-            # feedに入っているsourceだとHDじゃないのでwww.facebook.comドメインのembedで使われるurlを使う
-            # logger.debug "#{movie.video}->source: #{video_info["source"]}"
-            # movie.source = video_info["source"]
-            logger.debug "#{movie.video}->source: http://www.facebook.com/v/#{movie.video}"
-            movie.source = "http://www.facebook.com/v/#{movie.video}"
-            # 動画の長さ以外に何が入るのかよくわかっていない
-            logger.debug "#{movie.video}->length: #{video_info["properties"][0]["text"]}"
-            movie.length = video_info["properties"][0]["text"]
-            movie.save
-          end
-        end
+      not_yet.each do |mov|
+        json_data = get_movie_info(mov.video)
+        info = JSON.parse(json_data)
+        # logger.debug "info: #{info}"
+        mov.meta = info["data"][0]["src"]
+        mov.picture = info["data"][0]["thumbnail_link"]
+        mov.source = info["data"][0]["src_hq"]
+        mov.length = info["data"][0]["length"]
+        mov.save
       end
     end
   end
