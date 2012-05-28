@@ -86,12 +86,13 @@ class ApplicationController < ActionController::Base
       not_yet.each do |mov|
         json_data = get_movie_info(mov.video)
         info = JSON.parse(json_data)
-        # logger.debug "info: #{info}"
-        mov.meta = info["data"][0]["src"]
-        mov.picture = info["data"][0]["thumbnail_link"]
-        mov.source = info["data"][0]["src_hq"]
-        mov.length = info["data"][0]["length"]
-        mov.save
+        unless info["data"].blank?
+          mov.meta = info["data"][0]["src"]
+          mov.picture = info["data"][0]["thumbnail_link"]
+          mov.source = info["data"][0]["src_hq"]
+          mov.length = info["data"][0]["length"]
+          mov.save
+        end
       end
     end
   end
