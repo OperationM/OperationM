@@ -55,10 +55,10 @@
           <!-- <source src="<%= @movie.source %>"> -->
         <!-- </video> -->
         <%= content_tag :p do %>
-          <object width="720" height="480" >
+          <object>
             <param name="allowfullscreen" value="true" />
             <param name="movie" value="<%= @movie.source %>" />
-            <embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="480"></embed>
+            <embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="400"></embed>
           </object>
         <% end %>
       <% end %>
