@@ -77,3 +77,11 @@
     <% end %>
   <% end %>
 <% end %>
+<%= content_tag :div, :class => "span4" do %>
+  <% unless @movie.comments.empty? %>
+    <table class="movie-comments" summary="Movie comments">
+      <%= render @comments %>
+    </table>
+    <%= will_paginate @comments %>
+  <% end %>
+<% end %>

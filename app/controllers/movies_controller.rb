@@ -32,6 +32,9 @@ class MoviesController < ApplicationController
     gon.token = current_user.access_token
     gon.movie_id = @movie.id
 
+    # コメントを取得
+    @comments = @movie.comments.paginate(:page => params[:page])
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @movie}

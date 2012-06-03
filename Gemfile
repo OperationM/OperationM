@@ -9,6 +9,7 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
 gem 'kaminari'
+gem 'will_paginate', '~> 3.0'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -57,4 +58,5 @@ group :test do
   gem 'guard-spork', '0.3.2'
   gem 'spork', '~> 0.9.0.rc'
   gem 'factory_girl'
+  gem 'faker'
 end
