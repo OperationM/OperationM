@@ -1,9 +1,6 @@
-<tr>
-  <td class="comment">
-    <span class="comment-user"><%= comment.omniuser.screen_name %></span>
-    <span class="comment-content"><%= comment.comment %></span>
-    <span class="comment-timestamp">
-      Posted <%= time_ago_in_words(comment.created_at) %> ago.
-    </span>
-  </td>
-</tr>
+<% unless @comments.empty? %>
+  <table class="movie-comments" summary="Movie comments">
+    <%= render :partial => 'comments/comment_item', :collection => @comments %>
+  </table>
+  <%= will_paginate @comments %>
+<% end %>

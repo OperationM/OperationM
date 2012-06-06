@@ -34,6 +34,7 @@ class MoviesController < ApplicationController
 
     # コメントを取得
     @comments = @movie.comments.paginate(:page => params[:page])
+    @comment = Comment.new
 
     respond_to do |format|
       format.html # show.html.erb

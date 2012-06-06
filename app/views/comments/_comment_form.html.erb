@@ -1,0 +1,9 @@
+<%= form_for @comment do |f| %>
+  <div class="field">
+    <%= f.text_area :comment, :size => "60" %>
+    <%= f.hidden_field :movie_id, :value => @movie.id %>
+  </div>
+  <div class="actions">
+    <%= f.submit "Submit" %>
+  </div>
+<% end %>

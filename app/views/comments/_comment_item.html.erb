@@ -1,0 +1,17 @@
+<tr>
+  <td class="comment">
+    <span class="user">
+      <!--%= link_to comment_item.omniuser.screen_name, comment_item.omniuser %-->
+      <%= comment_item.omniuser.screen_name %>
+    </span>
+    <span class="content"><%= comment_item.comment %></span>
+    <span class="timestamp">Posted <%= time_ago_in_words(comment_item.created_at) %> ago. </span>
+  </td>
+  <% if current_user == (comment_item.omniuser) %>
+    <td>
+      <%= link_to "delete", comment_item, :method => :delete,
+                                       :confirm => "You sure?",
+                                       :title => comment_item.comment %>
+    </td>
+  <% end %>
+</tr>

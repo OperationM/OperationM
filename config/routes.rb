@@ -6,6 +6,7 @@ MoogleApp::Application.routes.draw do
   resources :tracks, :only => [:show, :create, :update, :destroy]
   resources :bands, :only => [:show]
   resources :concerts, :only => [:show]
+  resources :comments, :only => [:create, :destroy]
 
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
