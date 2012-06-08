@@ -16,14 +16,15 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    movie_id = @comment.movie.id
     @comment.destroy
+    redirect_to movie_path(movie_id)
     
   end
 
   private
 
   def authorized_user
-    raise params.inspect
     @comment = Comment.find(params[:id])
   end
 end
