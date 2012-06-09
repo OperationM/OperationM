@@ -1,17 +1,18 @@
-<tr>
-  <td class="comment">
-    <span class="user">
-      <!--%= link_to comment_item.omniuser.screen_name, comment_item.omniuser %-->
-      <%= comment_item.omniuser.screen_name %>
-    </span>
-    <span class="content"><%= comment_item.comment %></span>
-    <span class="timestamp">Posted <%= time_ago_in_words(comment_item.created_at) %> ago. </span>
-  </td>
-  <% if current_user == (comment_item.omniuser) %>
-    <td>
-      <%= link_to "delete", comment_item, :method => :delete,
+<%= content_tag :ul, :class => 'commentList unstyled' do %>
+  <%= content_tag :li do %>
+    <%= content_tag :div, :class => 'commentBlock' do %>
+      <%= content_tag :span, '',:class => 'userPict' %>
+      <%= content_tag :span, :class => 'content' do %>
+        <%= content_tag :span, comment_item.omniuser.screen_name ,:class => 'userName' %>
+        <%= content_tag :span, comment_item.comment, :class => 'commentBody' %>
+        <%= content_tag :span, "Posted #{time_ago_in_words(comment_item.created_at)} ago.", :class => 'timeStamp' %>
+      <% end %>
+      <% if current_user == (comment_item.omniuser) %>
+        <%= link_to "x", comment_item, :method => :delete,
                                        :confirm => "You sure?",
-                                       :title => comment_item.comment %>
-    </td>
+                                       :title => comment_item.comment,
+                                       :remote => true %>
+      <% end %>
+    <% end %>
   <% end %>
-</tr>
+<% end %>

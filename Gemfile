@@ -9,7 +9,6 @@ gem 'execjs'
 gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
 gem 'kaminari'
-gem 'will_paginate', '~> 3.0'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'

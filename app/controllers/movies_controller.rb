@@ -33,7 +33,7 @@ class MoviesController < ApplicationController
     gon.movie_id = @movie.id
 
     # コメントを取得
-    @comments = @movie.comments.paginate(:page => params[:page])
+    @comments = @movie.comments
     @comment = Comment.new
 
     respond_to do |format|

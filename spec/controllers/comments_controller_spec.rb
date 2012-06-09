@@ -67,6 +67,13 @@ describe CommentsController do
         end.should change(Comment, :count).by(1)
       end
 
+      it "should create comment using Ajax" do
+        lambda do
+          xhr :post, :create, :comment => @attr
+          response.should be_success
+        end.should change(Comment, :count).by(1)
+      end
+
       it "should redirect to the movie page" do
         post :create, :comment => @attr
         response.should redirect_to(movie_path(@movie))
@@ -92,6 +99,13 @@ describe CommentsController do
       it "should destroy the comment" do
         lambda do
           delete :destroy, :id => @comment
+        end.should change(Comment, :count).by(-1)
+      end
+
+      it "should destroy a comment using Ajax" do
+        lambda do
+          xhr :delete, :destroy, :id => @comment
+          response.should be_success
         end.should change(Comment, :count).by(-1)
       end
     end

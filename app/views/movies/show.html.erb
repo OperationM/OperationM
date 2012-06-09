@@ -78,14 +78,11 @@
   <% end %>
 <% end %>
 <%= content_tag :div, :class => "span4" do %>
-  <table>
-    <tr>
-      <td>
-        <h1 class="comment">Comment</h1>
-        <%= render 'comments/comment' %>
-        <%= render 'comments/comment_form' %>
-      </td>
-    </tr>
-  </table>
-  <%= params %>
+  <%= content_tag :ul, :class => 'unstyled' do %>
+    <%= content_tag :li do %>
+      <%= content_tag :h1, 'Comment', :class => 'comment' %>
+      <%= render 'comments/comment' %>
+      <%= render 'comments/comment_form' %>
+    <% end %>
+  <% end %>
 <% end %>

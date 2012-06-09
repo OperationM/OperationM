@@ -1,6 +1,5 @@
 <% unless @comments.empty? %>
-  <table class="movie-comments" summary="Movie comments">
+  <%= content_tag(:div, :id => 'movie-comments') do %>
     <%= render :partial => 'comments/comment_item', :collection => @comments %>
-  </table>
-  <%= will_paginate @comments %>
+  <% end %>
 <% end %>

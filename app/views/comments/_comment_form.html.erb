@@ -1,9 +1,9 @@
-<%= form_for @comment do |f| %>
-  <div class="field">
+<%= form_for @comment, :remote => true do |f| %>
+  <%= content_tag :div, :class => 'field' do %>
     <%= f.text_area :comment, :size => "60" %>
     <%= f.hidden_field :movie_id, :value => @movie.id %>
-  </div>
-  <div class="actions">
-    <%= f.submit "Submit" %>
-  </div>
+  <% end %>
+  <%= content_tag :div, :class => 'actions' do %>
+    <%= f.submit "Post" %>
+  <% end %>
 <% end %>
