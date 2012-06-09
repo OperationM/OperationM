@@ -78,10 +78,12 @@
   <% end %>
 <% end %>
 <%= content_tag :div, :class => "span4" do %>
-  <%= content_tag :ul, :class => 'unstyled' do %>
+  <%= content_tag :ul, :class => 'commentArea unstyled' do %>
     <%= content_tag :li do %>
-      <%= content_tag :h1, 'Comment', :class => 'comment' %>
-      <%= render 'comments/comment' %>
+      <%= content_tag :h3, 'Comment' %>
+      <%= content_tag :div, :id => 'commentRenderArea' do %>
+        <%= render 'comments/comment' %>
+      <% end %>
       <%= render 'comments/comment_form' %>
     <% end %>
   <% end %>

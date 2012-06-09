@@ -78,11 +78,6 @@ describe CommentsController do
         post :create, :comment => @attr
         response.should redirect_to(movie_path(@movie))
       end
-
-      it "should have a flash message" do
-        post :create, :comment => @attr
-        flash[:success].should =~ /comment created/i
-      end
     end
   end
 

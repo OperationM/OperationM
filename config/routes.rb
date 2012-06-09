@@ -18,6 +18,7 @@ MoogleApp::Application.routes.draw do
   match "/logout" => "sessions#destroy", :as => :logout
   
   match "/search" => "movies#search"
+  match "/comments/show_all_comments" => "comments#show_all_comments"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
