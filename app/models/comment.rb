@@ -7,5 +7,5 @@ class Comment < ActiveRecord::Base
   validates :omniuser_id, :presence => true
   validates :comment, :presence => true
 
-  default_scope :order => 'comments.created_at ASC'
+  default_scope :order => 'comments.created_at DESC'
 end

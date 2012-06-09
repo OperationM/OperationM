@@ -28,6 +28,7 @@ class CommentsController < ApplicationController
   end
 
   def show_all_comments
+    @movie = Movie.find(params[:movie_id])
   end
 
   private

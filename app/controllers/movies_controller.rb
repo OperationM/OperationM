@@ -32,8 +32,7 @@ class MoviesController < ApplicationController
     gon.token = current_user.access_token
     gon.movie_id = @movie.id
 
-    # コメントを取得
-    @comments = @movie.comments
+    # 新規コメント用
     @comment = Comment.new
 
     respond_to do |format|
