@@ -1,1 +1,1 @@
-$('#commentRenderArea').html("<%= escape_javascript(render 'comments/comment') %>")
+$('#movie-comments ul').append("<%= escape_javascript(render :partial => 'comments/comment_item', :locals => {:comment_item => @comment}) %>")

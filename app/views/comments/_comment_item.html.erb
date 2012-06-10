@@ -1,4 +1,4 @@
-<%= content_tag :li do %>
+<%= content_tag :li , :id => "commentListItem#{comment_item.id}" do %>
   <%= content_tag :div, :class => 'commentItemBlock' do %>
     <%= content_tag :span, '',:class => 'userPict commentItemBlock_Image' %>
     <%= content_tag :span, :class => 'commentItemBlock_x' do %>

@@ -1,1 +1,6 @@
-$('#commentRenderArea').html("<%= escape_javascript(render 'comments/comment') %>")
+$('#commentListItem<%= @comment.id %>').remove()
+<% if @movie.comments.size > 10 %>
+  $('.commentViewAll a').text('View all <%= @movie.comments.size %> comments')
+<% else %>
+  $('.commentViewAll a').remove()
+<% end %>

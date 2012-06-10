@@ -1,6 +1,4 @@
 class CommentsController < ApplicationController
-  before_filter :authenticate_member, :only => [:create, :destroy]
-  before_filter :authorized_user, :only => :destroy
 
   def create
     @movie = Movie.find(params[:comment][:movie_id])
@@ -17,6 +15,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+    @comment = Comment.find(params[:id])
     @movie = @comment.movie
     @comment.destroy
 
@@ -31,9 +30,4 @@ class CommentsController < ApplicationController
     @movie = Movie.find(params[:movie_id])
   end
 
-  private
-
-  def authorized_user
-    @comment = Comment.find(params[:id])
-  end
 end
