@@ -56,4 +56,6 @@ group :test do
   gem 'ruby_gntp'
   gem 'guard-spork', '0.3.2'
   gem 'spork', '~> 0.9.0.rc'
+  gem 'factory_girl'
+  gem 'faker'
 end
