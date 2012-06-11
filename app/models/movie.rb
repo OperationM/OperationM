@@ -6,6 +6,7 @@ class Movie < ActiveRecord::Base
   has_many :members, :through => :memberings, :uniq => true
   has_many :trackkings
   has_many :tracks, :through => :trackkings, :uniq => true
+  has_many :comments, :dependent => :destroy
   belongs_to :band
   belongs_to :concert
 
