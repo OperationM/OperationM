@@ -51,15 +51,16 @@
     <% end %>
     <%= content_tag :div, :class => "tab-content" do %>
       <%= content_tag :div, :class => "tab-pane active", :id => "1" do %>
-        <!-- <video controls poster="<%= @movie.picture %>" width="720" height="480"> -->
-          <!-- <source src="<%= @movie.source %>"> -->
-        <!-- </video> -->
         <%= content_tag :p do %>
-          <object>
-            <param name="allowfullscreen" value="true" />
-            <param name="movie" value="<%= @movie.source %>" />
-            <embed src="<%= @movie.source %>" type="application/x-shockwave-flash" allowfullscreen="true" width="720" height="400"></embed>
-          </object>
+          <% src = hq_src(@movie.video) %>
+          <video width="720" height="400" controls="controls">
+            <source src="<%= src %>" type="video/mp4" />
+            <object data="<%= src %>" width="720" height="400">
+              <embed src="<%= src %>" width="720" height="400">
+              Your browser does not support video
+              </embed>
+            </object> 
+          </video>
         <% end %>
       <% end %>
       <%= content_tag :div, :class => "tab-pane", :id => "2" do %>

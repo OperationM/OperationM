@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   helper_method :fetch_movie_src
   helper_method :admin?
   helper_method :member?
+  helper_method :hq_src
 
   private
   # ログインユーザーを返す
@@ -90,10 +91,27 @@ class ApplicationController < ActionController::Base
           mov.meta = info["data"][0]["src"]
           mov.picture = info["data"][0]["thumbnail_link"]
           mov.source = info["data"][0]["src_hq"]
-          mov.length = info["data"][0]["length"]
+          mov.length = sec2strtime(info["data"][0]["length"])
           mov.save
         end
       end
     end
+  end
+
+  def hq_src(video_id)
+    json_data = get_movie_info(video_id)
+    info = JSON.parse(json_data)
+    unless info["data"].blank?
+      return info["data"][0]["src_hq"]
+    end
+    return nil
+  end
+
+  def sec2strtime(msec)
+    sec_work = msec.to_f.ceil.to_i
+    min = sec_work / 60
+    sec = sec_work % 60
+    hour = sec_work / 3600
+    strtime = "%2d:%2d:%2d"%([hour,sec,min])
   end
 end
