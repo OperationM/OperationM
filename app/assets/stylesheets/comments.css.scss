@@ -1,0 +1,47 @@
+// Place all the styles related to the Comments controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.commentArea
+{
+  margin-top: 70px;
+}
+
+.commentBlock
+{
+}
+
+.commentList
+{
+  margin-top: 1px;
+}
+
+.commentItemBlock
+{
+  display: block;
+}
+
+.commentItemBlock_Image
+{
+  float: left;
+}
+
+.commentItemBlock_x
+{
+  float: right;
+}
+
+.userName
+{
+  font: {
+    weight: bold;
+  }
+}
+
+.commentInfoBlock
+{
+  display: block;
+  color: gray;
+  font: {
+    size: 9;
+  }
+}

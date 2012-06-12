@@ -68,11 +68,28 @@ describe MoviesController do
   end
 
   describe "GET show" do
+    # morphinkf start
+    before(:each) do
+      @user = Factory(:omniuser)
+      @movie = Factory(:movie)
+    end
+    # morphinkf end
+
     it "assigns the requested movie as @movie" do
       movie = Movie.create! valid_attributes
       get :show, :id => movie.id
       assigns(:movie).should eq(movie)
     end
+
+    # morphinkf start
+    it "should show the movie's comments" do
+      cm1 = Factory(:comment, :omniuser => @user, :comment => "test comment")
+      cm2 = Factory(:comment, :omniuser => @user, :comment => "another test comment")
+      get :show, :id => @movie
+      response.should have_selector("span.comment-content", :content => cm1.comment)
+      response.should have_selector("span.comment-content", :content => cm2.comment)
+    end
+    # morphinkf end
   end
 
   describe "GET new" do

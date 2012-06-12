@@ -1,4 +1,5 @@
 class Omniuser < ActiveRecord::Base
+  has_many :comments
 	# 新たにユーザー情報を保持
 	def self.create_with_omniauth(auth)
     create!do |user|
