@@ -11,7 +11,7 @@
         <% if movie.source %>
           <%= content_tag :li do %>
             <%= content_tag :div, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{movie.length})", "data-content" => movie.created_at do %>
-              <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span1", :id => "movie-thumbnail") %>
+              <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span2", :id => "movie-thumbnail") %>
             <% end %>
           <% end %>
         <% end %>
