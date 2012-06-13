@@ -4,23 +4,28 @@
 
 # ファイル選択
 $ ->
-  $('#file_upload').live('change', fileInfo)
+  if $('#file_upload').size() > 0
+    $('#file_upload').live('change', fileInfo)
 
 # ボタン    
 $ ->
-  $('#start_upload').live('click', startUpload)
+  if $('#start_upload').size() > 0
+    $('#start_upload').live('click', startUpload)
 
 # チェックボックス
-$ -> 
-  $('#only_sync').live('change', changeVideoField)
+$ ->
+  if $('#only_sync').size() > 0
+    $('#only_sync').live('change', changeVideoField)
 
 # ライブ名選択用のセレクトボックス
 $ ->
-  $('#movie_concert_id').live('change', toggleCocertSelection)
+  if $('#movie_concert_id').size() > 0
+    $('#movie_concert_id').live('change', toggleCocertSelection)
 
 # バンド名選択用のセレクトボックス
 $ ->
-  $('#movie_band_id').live('change', toggleBandSelection)
+  if $('#movie_band_id').size() > 0
+    $('#movie_band_id').live('change', toggleBandSelection)
 
 # document.ready
 $ ->
@@ -31,17 +36,18 @@ $ ->
   $('.progress').hide()
 
 $ ->
-  $('#movie-thumbnail')
-    .live("ajax:complete", (xhr)->
-    )
-    .live("ajax:beforeSend", (xhr)->
-    )
-    .live("ajax:success", (event, data, status, xhr)->
-      $('#movie-view').empty().append(data.html)
-    )
-    .live("ajax:error", (data, status, xhr)->
-      console.log "error"
-    )
+  if $('#thumbnail').size() > 0
+    $('#movie-thumbnail')
+      .live("ajax:complete", (xhr)->
+      )
+      .live("ajax:beforeSend", (xhr)->
+      )
+      .live("ajax:success", (event, data, status, xhr)->
+        $('#movie-view').empty().append(data.html)
+      )
+      .live("ajax:error", (data, status, xhr)->
+        console.log "error"
+      )
 
 # Concert入力用のセレクトボックスが選択された時
 toggleCocertSelection = () ->

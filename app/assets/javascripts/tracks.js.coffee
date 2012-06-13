@@ -4,20 +4,21 @@
 
 # iTunes Web APIを使って動画で演奏されている曲名を設定する。オリジナルバンドの登録にも対応できるようにする。
 $ ->
-  $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
-    queryParam: 'term',
-    propertyToSearch: 'artist',
-    addManually: true,
-    beforeAdd: trackAddBefore,
-    onDelete: trackDeleted,
-    prePopulate: $('#tracks').data('pre'),
-    onResult: tracksResults,
-    noResultsText: "No results. When you add, please press the enter key or click here.",
-    resultsFormatter: tracksFormatResults,
-    tokenFormatter: tracksFormatToken,
-    searchDelay: 1000,
-    preventDuplicates: true
-    })
+  if $('#tracks').size() > 0
+    $('#tracks').tokenInput('http://itunes.apple.com/search?limit=50&country=jp&media=music&entity=song', {
+      queryParam: 'term',
+      propertyToSearch: 'artist',
+      addManually: true,
+      beforeAdd: trackAddBefore,
+      onDelete: trackDeleted,
+      prePopulate: $('#tracks').data('pre'),
+      onResult: tracksResults,
+      noResultsText: "No results. When you add, please press the enter key or click here.",
+      resultsFormatter: tracksFormatResults,
+      tokenFormatter: tracksFormatToken,
+      searchDelay: 1000,
+      preventDuplicates: true
+      })
 
 # tokenInput callbacks
 # 検索結果から選択された時。新規登録時の記入フォーマットは"曲名@アーティスト名"

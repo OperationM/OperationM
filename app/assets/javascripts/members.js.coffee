@@ -4,16 +4,17 @@
 
 # FBのミューソグループのメンバーから検索する。ミューソグループ外の入力は追加しない。
 $ ->
-  $('#members').tokenInput('https://graph.facebook.com/224428787635384/members?access_token=' + gon.token, {
-    jsonContainer: 'data',
-    addManually: true,
-    beforeAdd: memberAddBefore,
-    onDelete: memberDelete,
-    noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#members').data('pre'),
-    tokenFormatter: membersFormatToken,
-    preventDuplicates: true
-    })
+  if $('#members').size() > 0
+    $('#members').tokenInput('https://graph.facebook.com/224428787635384/members?access_token=' + gon.token, {
+      jsonContainer: 'data',
+      addManually: true,
+      beforeAdd: memberAddBefore,
+      onDelete: memberDelete,
+      noResultsText: "No results. When you add, please press the enter key or click here.",
+      prePopulate: $('#members').data('pre'),
+      tokenFormatter: membersFormatToken,
+      preventDuplicates: true
+      })
 
 # tokenInput callback
 # 検索結果から選択された時
