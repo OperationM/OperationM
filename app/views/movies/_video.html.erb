@@ -1,17 +1,10 @@
 <%= content_tag :div, :class => "control-group" do %>
-  <%= label_tag "sync", "Sync", :class => "control-label" %>
+  <%= label_tag "upload", "Upload File", :class => "control-label" %>
   <%= content_tag :div, :class => "controls" do %>
-    <%= check_box_tag "only_sync", false, false, :id => "only_sync" %>
-    <%= content_tag :div, :id => "graph_object" do %>
-      <%= content_tag :span, "graph object", :class => "label label-info" %>
-      <input id="movie_video" name="movie[video]" type="text" value="">
-    <% end %>
-    <%= content_tag :div, :id => "sync" do %>
-      <%= content_tag :span, "attachment", :class => "label label-info" %>
-      <%= file_field "file", "upload" %>
-      <%= content_tag :div, :class => "progress progress-striped active" do %>
-        <%= content_tag :div, "", :id => "progress_number", :class => "bar" %>
-      <% end %>
+    <%= file_field "file", "upload" %>
+    <%= hidden_field_tag 'movie[video]' %>
+    <%= content_tag :div, :class => "progress progress-striped active" do %>
+      <%= content_tag :div, "", :id => "progress_number", :class => "bar" %>
     <% end %>
   <% end %>
 <% end %>

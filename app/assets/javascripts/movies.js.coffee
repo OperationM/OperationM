@@ -2,20 +2,10 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-# ファイル選択
-$ ->
-  if $('#file_upload').size() > 0
-    $('#file_upload').live('change', fileInfo)
-
 # ボタン    
 $ ->
   if $('#start_upload').size() > 0
     $('#start_upload').live('click', startUpload)
-
-# チェックボックス
-$ ->
-  if $('#only_sync').size() > 0
-    $('#only_sync').live('change', changeVideoField)
 
 # ライブ名選択用のセレクトボックス
 $ ->
@@ -71,16 +61,6 @@ toggleBandSelection = () ->
     else
       wrapper.show('fast')
 
-# ファイルが選択された時にファイルの情報を表示
-fileInfo = () ->
-  file = $("#file_upload").prop('files')[0]
-  if file
-    fileSize = 0
-    if file.size > 1024 * 1024
-      fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-    else
-      fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-
 # MoogleへのPOSTのみにするかどうかのトグルスイッチ
 changeVideoField = () ->
   checked = $('#only_sync').attr('checked')
@@ -93,24 +73,19 @@ changeVideoField = () ->
 
 # アップロードボタンが押された時の処理
 startUpload = () ->
-  checked = $('#only_sync').attr('checked')
-  if checked
-    console.log "post moogle"
-    postForm()
-  else
-    console.log "post video before post moogle"
-    $('.progress').show()
-    $.ajax({
-      type: 'GET'
-      url: "https://graph.facebook.com/me/accounts?access_token="+gon.token
-      dataType: 'json'
-      success: (data, dataType) ->
-        get_app_access_token(data, dataType)
-      error: (XMLHttpRequest, textStatus, errorThrown) ->
-        console.log XMLHttpRequest
-        console.log textStatus
-        console.log errorThrown
-      })
+  console.log "post video before post moogle"
+  $('.progress').show()
+  $.ajax({
+    type: 'GET'
+    url: "https://graph.facebook.com/me/accounts?access_token="+gon.token
+    dataType: 'json'
+    success: (data, dataType) ->
+      get_app_access_token(data, dataType)
+    error: (XMLHttpRequest, textStatus, errorThrown) ->
+      console.log XMLHttpRequest
+      console.log textStatus
+      console.log errorThrown
+    })
 
 get_app_access_token = (data, dataType) ->
   console.log data.data
@@ -146,7 +121,6 @@ uploadProgress = (evt) ->
 # アップロードが完了した時の処理
 uploadComplete = (evt) ->
   console.log evt
-  $('#sync').empty()
   $('#movie_video').val(parseID(evt.target.responseText))
   postForm()
 
@@ -167,10 +141,4 @@ postForm = () ->
 parseID = (jsData) ->
   data = eval("("+jsData+")")
   data.id
-
-# UUID作成
-uuid = () ->
-  S4 = () ->
-    (((1+Math.random())*0x10000)|0).toString(16).substring(1)
-  (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4())
 
