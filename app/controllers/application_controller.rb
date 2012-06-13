@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sec2strtime(msec)
-    sec_work = msec.to_f.ceil.to_i
+    sec_work = msec.to_f.truncate.to_i
     min = sec_work / 60
     sec = sec_work % 60
     hour = sec_work / 3600
