@@ -7,6 +7,10 @@ $ ->
   if $('#start_upload').size() > 0
     $('#start_upload').live('click', startUpload)
 
+$ ->
+  if $('#cancel_upload').size() > 0
+    $('#cancel_upload').live('click', cancelUpload)
+
 # ライブ名選択用のセレクトボックス
 $ ->
   if $('#movie_concert_id').size() > 0
@@ -17,6 +21,8 @@ $ ->
   if $('#movie_band_id').size() > 0
     $('#movie_band_id').live('change', toggleBandSelection)
 
+action_is_post = false
+
 # document.ready
 $ ->
   toggleCocertSelection()
@@ -24,6 +30,17 @@ $ ->
   $('.movie-list').popover({placement: 'top'})
   $('#graph_object').hide()
   $('.progress').hide()
+  $("body").bind("ajaxSend",(c,xhr) ->
+    $( window ).bind("beforeunload", (e) ->
+      console.log action_is_post
+      e = e || window.event
+      if e && action_is_post == false
+        e.returnValue = "Uploading now!"
+        return "Uploading now!"
+      else
+        return null
+    )
+  )
 
 $ ->
   if $('#thumbnail').size() > 0
@@ -74,6 +91,7 @@ changeVideoField = () ->
 # アップロードボタンが押された時の処理
 startUpload = () ->
   console.log "post video before post moogle"
+  $('#start_upload').attr('disabled', true)
   $('.progress').show()
   $.ajax({
     type: 'GET'
@@ -87,6 +105,11 @@ startUpload = () ->
       console.log errorThrown
     })
 
+# キャンセルボタンが押された時の処理
+cancelUpload = () ->
+  location.reload()
+
+# ユーザー情報からmoogleアプリ投稿用のアクセストークンを取得
 get_app_access_token = (data, dataType) ->
   console.log data.data
   app_id = "253970248019703"
@@ -122,6 +145,7 @@ uploadProgress = (evt) ->
 uploadComplete = (evt) ->
   console.log evt
   $('#movie_video').val(parseID(evt.target.responseText))
+  action_is_post = true
   postForm()
 
 # アップロードに失敗した時の処理
@@ -135,7 +159,6 @@ uploadCanceled = (evt) ->
 # アプリへのPOST
 postForm = () ->
   $('#new_movie').submit()
-  console.log "finish submit"
 
 # ID取得
 parseID = (jsData) ->
