@@ -91,23 +91,46 @@ changeVideoField = () ->
 # アップロードボタンが押された時の処理
 startUpload = () ->
   console.log "post video before post moogle"
-  $('#start_upload').attr('disabled', true)
-  $('.progress').show()
-  $.ajax({
-    type: 'GET'
-    url: "https://graph.facebook.com/me/accounts?access_token="+gon.token
-    dataType: 'json'
-    success: (data, dataType) ->
-      get_app_access_token(data, dataType)
-    error: (XMLHttpRequest, textStatus, errorThrown) ->
-      console.log XMLHttpRequest
-      console.log textStatus
-      console.log errorThrown
-    })
+  valid = validate()
+  if valid
+    $('#start_upload').attr('disabled', true)
+    $('.progress').show()
+    $.ajax({
+      type: 'GET'
+      url: "https://graph.facebook.com/me/accounts?access_token="+gon.token
+      dataType: 'json'
+      success: (data, dataType) ->
+        get_app_access_token(data, dataType)
+      error: (XMLHttpRequest, textStatus, errorThrown) ->
+        console.log XMLHttpRequest
+        console.log textStatus
+        console.log errorThrown
+      })
 
 # キャンセルボタンが押された時の処理
 cancelUpload = () ->
   location.reload()
+
+# アップロード時のバリデート
+validate = () ->
+  selected_concert = $('#movie_concert_id').get(0).selectedIndex
+  movie_concert_name = $('#movie_concert_name').val()
+  if selected_concert == 0 && movie_concert_name == ""
+    alert "Please input a concert name!"
+    return false
+
+  selected_band = $('#movie_band_id').get(0).selectedIndex
+  movie_band_name = $('#movie_band_name').val()
+  if selected_band == 0 && movie_band_name == ""
+    alert "Please input a band name!"
+    return false
+
+  upload_file = $('#file_upload').val()
+  if upload_file == ""
+    alert "Please select an upload file!"
+    return false
+    
+  return true
 
 # ユーザー情報からmoogleアプリ投稿用のアクセストークンを取得
 get_app_access_token = (data, dataType) ->
