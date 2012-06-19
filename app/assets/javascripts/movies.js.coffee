@@ -21,7 +21,7 @@ $ ->
   if $('#movie_band_id').size() > 0
     $('#movie_band_id').live('change', toggleBandSelection)
 
-action_is_post = false
+movie_uploading = false
 
 # document.ready
 $ ->
@@ -32,9 +32,9 @@ $ ->
   $('.progress').hide()
   $("body").bind("ajaxSend",(c,xhr) ->
     $( window ).bind("beforeunload", (e) ->
-      console.log action_is_post
+      console.log movie_uploading
       e = e || window.event
-      if e && action_is_post == false
+      if e && movie_uploading == true
         e.returnValue = "Uploading now!"
         return "Uploading now!"
       else
@@ -94,6 +94,7 @@ startUpload = () ->
   valid = validate()
   if valid
     $('#start_upload').attr('disabled', true)
+    movie_uploading = true
     $('.progress').show()
     $.ajax({
       type: 'GET'
@@ -168,7 +169,7 @@ uploadProgress = (evt) ->
 uploadComplete = (evt) ->
   console.log evt
   $('#movie_video').val(parseID(evt.target.responseText))
-  action_is_post = true
+  movie_uploading = false
   postForm()
 
 # アップロードに失敗した時の処理
