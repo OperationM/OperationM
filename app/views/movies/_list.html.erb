@@ -7,11 +7,11 @@
   <% end %>
   <%= content_tag :ul, :class => "thumbnails" do %>
     <% unless movies.blank? %>
-      <% movies.each do |movie| %>
+      <% movies.sort {|a, b| b.created_at<=>a.created_at}.each do |movie| %>
         <% if movie.source %>
-          <%= content_tag :li do %>
+          <%= content_tag :li, :class => "span2" do %>
             <%= content_tag :div, :class => "movie-list", :title => "#{movie.band.name}@#{movie.concert.name}(#{sec2strtime(movie.length)})", "data-content" => "作成日時："+movie.created_at.strftime("%Y年%m月%d日 %H時%M分") do %>
-              <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail span2", :id => "movie-thumbnail") %>
+              <%= link_to(image_tag(movie.picture), movie, :class => "thumbnail", :id => "movie-thumbnail") %>
             <% end %>
           <% end %>
         <% end %>
