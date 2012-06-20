@@ -1,20 +1,17 @@
 <%= content_tag :li , :id => "commentListItem#{comment_item.id}" do %>
-  <%= content_tag :div, :class => 'commentItemBlock' do %>
-    <%= content_tag :span, '',:class => 'userPict commentItemBlock_Image' %>
-    <%= content_tag :span, :class => 'commentItemBlock_x' do %>
-      <% if current_user == (comment_item.omniuser) %>
-        <%= link_to 'x', comment_item, :method => :delete,
-                                       :confirm => "You sure?",
-                                       :title => "Delete comment",
-                                       :remote => true %>
-      <% end %>
-    <% end %>
-    <%= content_tag :span, :class => 'content' do %>
+  <%= content_tag :div, :class => 'userIcon' do %>
+    <%= image_tag(comment_item.omniuser.picture, :size => "30x30", :alt => "pic") %>
+  <% end %>
+  <%= content_tag :div, :class => 'commentBody' do %>
+    <%= content_tag :div, :class => 'commentInfo' do %>
       <%= content_tag :span, comment_item.omniuser.name ,:class => 'userName' %>
-      <%= content_tag :span, comment_item.comment, :class => 'commentBody' %>
-      <%= content_tag :div, :class => 'commentInfoBlock' do %>
-        <%= content_tag :span, "Posted #{time_ago_in_words(comment_item.created_at)} ago.", :class => 'timeStamp' %>
+      <%= content_tag :span, "#{time_ago_in_words(comment_item.created_at)}", :class => 'timeStamp' %>
+      <% if current_user == (comment_item.omniuser) %>
+        <%= content_tag :span, :class => 'delete' do %>
+          <%= link_to 'x', comment_item, :method => :delete, :confirm => "You sure?", :title => "Delete comment", :remote => true %>
+        <% end %>
       <% end %>
     <% end %>
+    <%= content_tag :div, comment_item.comment, :class => 'commentContent' %>
   <% end %>
 <% end %>

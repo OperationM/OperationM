@@ -6,6 +6,13 @@
     <% end %>
     <%= content_tag :ul, :class => "dropdown-menu" do %>
       <%= content_tag :li do %>
+        <%= link_to(@movie.band.name, band_path(@movie.band)) %>
+      <% end %>
+      <%= content_tag :li do %>
+        <%= link_to(@movie.concert.name, concert_path(@movie.concert)) %>
+      <% end %>
+      <%= content_tag(:li, "", :class => "divider") %>
+      <%= content_tag :li do %>
         <%= link_to edit_movie_path(@movie) do %>
           <%= content_tag :i, "", :class => "icon-edit" %>
           Edit
@@ -37,7 +44,7 @@
     <%= content_tag :ul, :class => "nav nav-tabs" do %>
       <%= content_tag :li, :class => "active" do %>
         <%= link_to '#1', "data-toggle" => "tab" do %>
-          <%= content_tag :i, "", :class => "icon-pencil" %>
+          <%= content_tag :i, "", :class => "icon-comment" %>
           Comment
         <% end %>
       <% end %>
@@ -62,14 +69,10 @@
     <% end %>
     <%= content_tag :div, :class => "tab-content" do %>
       <%= content_tag :div, :class => "tab-pane active", :id => "1" do %>
-        <%= content_tag :ul, :class => 'commentArea unstyled' do %>
-          <%= content_tag :li do %>
-            <%= content_tag :div, :id => 'commentRenderArea' do %>
-              <%= render 'comments/comment' %>
-            <% end %>
-            <%= render 'comments/comment_form' %>
-          <% end %>
+        <%= content_tag :div, :id => 'commentRenderArea' do %>
+          <%= render 'comments/comment' %>
         <% end %>
+        <%= render 'comments/comment_form' %>
       <% end %>
       <%= content_tag :div, :class => "tab-pane", :id => "2" do %>
         <%= content_tag :div do %>
