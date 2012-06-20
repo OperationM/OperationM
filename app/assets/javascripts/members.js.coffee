@@ -6,14 +6,14 @@
 $ ->
   if $('#members').size() > 0
     $('#members').tokenInput('https://graph.facebook.com/224428787635384/members?access_token=' + gon.token, {
-      jsonContainer: 'data',
       addManually: true,
       beforeAdd: memberAddBefore,
       onDelete: memberDelete,
       noResultsText: "No results. When you add, please press the enter key or click here.",
       prePopulate: $('#members').data('pre'),
       tokenFormatter: membersFormatToken,
-      preventDuplicates: true
+      preventDuplicates: true,
+      onResult: memberResult
       })
 
 # tokenInput callback
@@ -41,6 +41,17 @@ memberDelete = (item) ->
       },
     success: completeRemoteDeleteMember
     })
+
+# 問い合わせ結果
+memberResult = (res) ->
+  val = $("#token-input-members").val()
+  re = new RegExp(val,"i");
+  data = []
+  for r in res.data
+    if r.name.match(re)
+      data.push(r)
+  data
+
 
 # ajax callback
 # サーバーでメンバーの追加が完了したらtokenInputに追加する。
