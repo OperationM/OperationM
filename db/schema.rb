@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120603063520) do
+ActiveRecord::Schema.define(:version => 20120620113329) do
 
   create_table "artists", :force => true do |t|
     t.string   "name"
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(:version => 20120603063520) do
     t.string   "access_token"
     t.boolean  "admin",        :default => false, :null => false
     t.boolean  "member",       :default => false, :null => false
+    t.string   "picture"
   end
 
   create_table "taggings", :force => true do |t|

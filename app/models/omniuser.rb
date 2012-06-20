@@ -10,6 +10,7 @@ class Omniuser < ActiveRecord::Base
       user.access_token = auth["credentials"]["token"]
       user.admin = admin_group(auth)
       user.member = member_group(auth)
+      user.picture = auth["info"]["image"]
     end
   end
 
