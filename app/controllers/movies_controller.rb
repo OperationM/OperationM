@@ -97,6 +97,10 @@ class MoviesController < ApplicationController
   # 動画を削除
   def destroy
     @movie = Movie.find(params[:id])
+    @deleted = Deleted.create!(:band => @movie.band.name, 
+                               :concert => @movie.concert.name, 
+                               :user => current_user.name, 
+                               :video => @movie.video)
     @movie.destroy
 
     respond_to do |format|
