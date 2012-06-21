@@ -6,7 +6,7 @@ class MoviesController < ApplicationController
   def search
     @keyword = params[:search_input]
     @movies = Movie.search(@keyword)
-
+    @movies = Kaminari.paginate_array(@movies).page(params[:page])
     respond_to do |format|
       format.html
       format.json { render json: @movies}

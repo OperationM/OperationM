@@ -6,7 +6,7 @@ class MembersController < ApplicationController
   # メンバーに関連する情報表示
   def show
     @member = Member.find(params[:id])
-    @movies = @member.movies
+    @movies = @member.movies.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

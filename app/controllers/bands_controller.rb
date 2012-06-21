@@ -1,7 +1,7 @@
 class BandsController < ApplicationController
   def show
     @band = Band.find(params[:id])
-    @movies = @band.movies
+    @movies = @band.movies.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb
