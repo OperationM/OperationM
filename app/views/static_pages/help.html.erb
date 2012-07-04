@@ -1,2 +1,153 @@
 <% provide(:title, 'Help') %>
-<%= content_tag :h1, "Help" %>
+<%= content_tag :div, :class => "page-header" do %>
+	<%= content_tag :h1 do %>
+	動画の探し方
+	<% end %>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		新着動画
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+ログイン後のトップページには最近アップロードされた動画が新着順で表示されます。<br/>
+アップロード直後はバンド名とライブ名のみ設定されています。<br/>
+ご自身が出演された覚えのあるライブ名かバンド名をメニューのリストから選択するか、<br/>
+検索フォームにライブ名、バンド名の一部を入力して目的の動画を検索してください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		情報が追加された動画
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画にはタグ、出演者、演奏した曲が追加設定できます。<br/>
+それらが設定されている動画はメニューのリストまたは検索フォームから探し出すことができます。<br/>
+<% end %>
+
+<%= content_tag :div, :class => "page-header" do %>
+	<%= content_tag :h1 do %>
+	動画に設定できる情報
+	<% end %>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		タグ(Tag)
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+タグは自由にキーワードを入力して設定することで、複数の動画を関連づけることができます。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		出演者(Player)
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画に関連付けできる出演者はFacebookのミューソグループに属している方のみです。<br/>
+もし、動画に出ている方でFacebookはやっているけどミューソグループに属していない方がいらっしゃいましたら<br/>
+Operation_Mのメンバーにまでご連絡ください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		演奏曲(Music)
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画にはライブで演奏した曲を設定することができます。<br/>
+曲はiTunes web apiによる情報からアーティストと曲名を設定することができます。<br/>
+補完されないまたはオリジナルソングの場合は"曲名@アーティスト"の形式で登録してください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		コメント
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画にはコメントを入力することができます。<br/>
+他の人が入力したコメントがリアルタイムに反映されるわけではないので、必要に応じてページを更新してください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		削除について
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画に設定できる情報はすべて自由に削除することができます。<br/>
+誹謗中傷等の不適切な表現が見かけられた場合は、随時削除してください。<br/>
+<% end %>
+
+<%= content_tag :div, :class => "page-header" do %>
+	<%= content_tag :h1 do %>
+	動画の取り扱い
+	<% end %>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		動画の削除
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画の削除も閲覧可能な方が自由に行うことができます。<br/>
+もし見られたくない動画がございましたら出演されている他の方と相談の上、動画閲覧ページの動画タイトルメニューより削除してください。<br/>
+なお、削除された動画の情報や削除したユーザー野情報は履歴としてアプリに残りますので、<br/>
+不適切な削除が見受けられた場合はアプリへのアクセス禁止処置を施させていただきますのでご了承ください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		動画の投稿
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+Moogleアプリの管理者権限がある場合のみ、サイト右上のユーザーメニューから動画の投稿を行うことができます。（現在、chromeでのアップロードができません。）<br/>
+初期設定では運営側以外に管理者権限はございませんので、動画を投稿されたい方がいらっしゃいましたら<br/>
+Operation_Mのメンバーにまでご連絡ください。<br/>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		動画の編集
+	<% end %>
+<% end %>
+<%= content_tag :p do %>
+動画のバンド名、ライブ名はどなたでも編集することができます。<br/>
+動画閲覧ページの動画タイトルメニューより編集してください。<br/>
+それらの変更の際に、動画のタグ、出演者、演奏曲、コメントといった動画に設定できる情報が消えることはありません。<br/>
+<% end %>
+
+<%= content_tag :div, :class => "page-header" do %>
+	<%= content_tag :h1 do %>
+	対応ブラウザ
+	<% end %>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		HTML5対応のモダンなブラウザ。スマフォは将来対応です。
+	<% end %>
+<% end %>
+
+<%= content_tag :div, :class => "page-header" do %>
+	<%= content_tag :h1 do %>
+	ご意見、ご要望
+	<% end %>
+<% end %>
+
+<%= content_tag :h2 do %>
+	<%= content_tag :small do %>
+		ご意見、ご要望がございましたらOperation_Mのメンバーにまで気軽にお問い合わせください。
+	<% end %>
+<% end %>
+
+<br/>
+<br/>
+<br/>
