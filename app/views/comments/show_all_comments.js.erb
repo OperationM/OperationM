@@ -1,2 +1,1 @@
-$('.commentViewAll').toggle()
-$('#commentItemRenderArea').html("<%= escape_javascript(render :partial => 'comments/comment_item', :collection => @movie.comments.reverse) %>")
+$('#commentItemRenderArea').html("<%= escape_javascript(render :partial => 'comments/comment_item', :collection => @movie.comments.reverse) %>");

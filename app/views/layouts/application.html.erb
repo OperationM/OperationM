@@ -2,12 +2,21 @@
 <html>
 <head>
   <title><%= full_title(yield(:title)) %></title>
-  <%= include_gon %>
+  <%= include_gon(:init => true) %>
   <%= render 'layouts/stylesheets' %>
   <%= javascript_include_tag "application", "jquery.tokeninput" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/ja_JP/all.js#xfbml=1&appId=253970248019703";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+  </script>
 	<div class="container">
 		<%= render 'layouts/header' %>
 		<%= render 'layouts/contents' %>

@@ -3,8 +3,10 @@
     <%= content_tag :div, :class => "navbar-inner" do %>
       <%= content_tag :div, :class => "container" do %>
         <%= content_tag :ul , :class => "nav pull-left" do %>
-          <%= content_tag(:li, link_to("©Operation_M. 2012", '#')) %>
-          <%= content_tag(:li, link_to("What's Moogle?", about_path)) %>
+          <%= content_tag(:li, link_to("©Operation_M. 2012", about_path)) %>
+          <%= content_tag(:li, link_to("About", about_path)) %>
+          <%= content_tag(:li, link_to("Privacy", privacy_path)) %>
+          <%= content_tag(:li, link_to("Policies", policies_path)) %>
         <% end %>
       <% end %>
     <% end %>

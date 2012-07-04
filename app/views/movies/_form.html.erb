@@ -44,10 +44,11 @@
     <%= content_tag :div, :class => "form-actions" do %>
       <% if !@movie.source %>
         <%= button_tag "Upload", :id => "start_upload", :class => "btn btn-primary", :type => "button" %>
+        <%= content_tag :div, 'Cancel', :id => "cancel_upload", :class => "btn" %>
       <% else %>
         <%= submit_tag "Update", :class => "btn btn-primary" %>
+        <%= link_to 'Cancel', @movie, :class => "btn" %>
       <% end %>
-      <%= link_to 'Cancel', movies_path, :class => "btn" %>
     <% end %>
     
   <% end %>

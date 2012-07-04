@@ -83,6 +83,9 @@
         <%= content_tag(:li, "", :class => "divider-vertical") %>
         <% if member? %>
         <%= content_tag :ul, :class => "nav" do %>
+          <%= content_tag :li do %>
+            <%= image_tag(current_user.picture, :size=>"30x30", :alt=>"pic", :style=>"margin-top: 5px;") %>
+          <% end %>
           <%= content_tag :li, :class => "dropdown" do %>
             <%= link_to('#', :class => "dropdown-toggle", "data-toggle" => "dropdown") do %>
                 <%= current_user.name %><b class="caret"></b>

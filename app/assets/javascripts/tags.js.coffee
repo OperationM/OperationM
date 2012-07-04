@@ -4,16 +4,17 @@
 
 # Moogleサーバーで既に登録されているタグを検索する。無かった場合はそのまま追加できるようにする。
 $ ->
-  $('#tags').tokenInput('/tags.json', {
-    crossDomain: false,
-    addManually: true,
-    beforeAdd: tagAddBefore,
-    onDelete: tagDeleted,
-    noResultsText: "No results. When you add, please press the enter key or click here.",
-    prePopulate: $('#tags').data('pre'),
-    tokenFormatter: tagsFormatToken,
-    preventDuplicates: true
-    })
+  if $('#tags').size() > 0
+    $('#tags').tokenInput('/tags.json', {
+      crossDomain: false,
+      addManually: true,
+      beforeAdd: tagAddBefore,
+      onDelete: tagDeleted,
+      noResultsText: "No results. When you add, please press the enter key or click here.",
+      prePopulate: $('#tags').data('pre'),
+      tokenFormatter: tagsFormatToken,
+      preventDuplicates: true
+      })
 
 # tokenInput callback
 # 結果が選択された場合、サーバーに新規タグ名を送信

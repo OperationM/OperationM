@@ -281,6 +281,12 @@ $.TokenList = function (input, url_or_data, settings) {
                 case KEY.ENTER:
                 case KEY.NUMPAD_ENTER:
                 case KEY.COMMA:
+                  if($(this).val().length === 0){
+                    return false;
+                  }
+                  if(!$(this).val().match(/¥S/g)){
+                    return false;
+                  }
                   if(selected_dropdown_item && settings.addManually) {
                     before_add_token($(selected_dropdown_item).data("tokeninput"));
                     hidden_input.change();
