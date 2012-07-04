@@ -2,25 +2,26 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://jashkenas.github.com/coffee-script/
 
-# ファイル選択
-$ ->
-  $('#file_upload').live('change', fileInfo)
-
 # ボタン    
 $ ->
-  $('#start_upload').live('click', startUpload)
+  if $('#start_upload').size() > 0
+    $('#start_upload').live('click', startUpload)
 
-# チェックボックス
-$ -> 
-  $('#only_sync').live('change', changeVideoField)
+$ ->
+  if $('#cancel_upload').size() > 0
+    $('#cancel_upload').live('click', cancelUpload)
 
 # ライブ名選択用のセレクトボックス
 $ ->
-  $('#movie_concert_id').live('change', toggleCocertSelection)
+  if $('#movie_concert_id').size() > 0
+    $('#movie_concert_id').live('change', toggleCocertSelection)
 
 # バンド名選択用のセレクトボックス
 $ ->
-  $('#movie_band_id').live('change', toggleBandSelection)
+  if $('#movie_band_id').size() > 0
+    $('#movie_band_id').live('change', toggleBandSelection)
+
+movie_uploading = false
 
 # document.ready
 $ ->
@@ -29,19 +30,31 @@ $ ->
   $('.movie-list').popover({placement: 'top'})
   $('#graph_object').hide()
   $('.progress').hide()
+  $("body").bind("ajaxSend",(c,xhr) ->
+    $( window ).bind("beforeunload", (e) ->
+      console.log movie_uploading
+      e = e || window.event
+      if e && movie_uploading == true
+        e.returnValue = "Uploading now!"
+        return "Uploading now!"
+      else
+        return null
+    )
+  )
 
 $ ->
-  $('#movie-thumbnail')
-    .live("ajax:complete", (xhr)->
-    )
-    .live("ajax:beforeSend", (xhr)->
-    )
-    .live("ajax:success", (event, data, status, xhr)->
-      $('#movie-view').empty().append(data.html)
-    )
-    .live("ajax:error", (data, status, xhr)->
-      console.log "error"
-    )
+  if $('#thumbnail').size() > 0
+    $('#movie-thumbnail')
+      .live("ajax:complete", (xhr)->
+      )
+      .live("ajax:beforeSend", (xhr)->
+      )
+      .live("ajax:success", (event, data, status, xhr)->
+        $('#movie-view').empty().append(data.html)
+      )
+      .live("ajax:error", (data, status, xhr)->
+        console.log "error"
+      )
 
 # Concert入力用のセレクトボックスが選択された時
 toggleCocertSelection = () ->
@@ -65,16 +78,6 @@ toggleBandSelection = () ->
     else
       wrapper.show('fast')
 
-# ファイルが選択された時にファイルの情報を表示
-fileInfo = () ->
-  file = $("#file_upload").prop('files')[0]
-  if file
-    fileSize = 0
-    if file.size > 1024 * 1024
-      fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
-    else
-      fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
-
 # MoogleへのPOSTのみにするかどうかのトグルスイッチ
 changeVideoField = () ->
   checked = $('#only_sync').attr('checked')
@@ -87,12 +90,11 @@ changeVideoField = () ->
 
 # アップロードボタンが押された時の処理
 startUpload = () ->
-  checked = $('#only_sync').attr('checked')
-  if checked
-    console.log "post moogle"
-    postForm()
-  else
-    console.log "post video before post moogle"
+  console.log "post video before post moogle"
+  valid = validate()
+  if valid
+    $('#start_upload').attr('disabled', true)
+    movie_uploading = true
     $('.progress').show()
     $.ajax({
       type: 'GET'
@@ -106,6 +108,32 @@ startUpload = () ->
         console.log errorThrown
       })
 
+# キャンセルボタンが押された時の処理
+cancelUpload = () ->
+  location.reload()
+
+# アップロード時のバリデート
+validate = () ->
+  selected_concert = $('#movie_concert_id').get(0).selectedIndex
+  movie_concert_name = $('#movie_concert_name').val()
+  if selected_concert == 0 && movie_concert_name == ""
+    alert "Please input a concert name!"
+    return false
+
+  selected_band = $('#movie_band_id').get(0).selectedIndex
+  movie_band_name = $('#movie_band_name').val()
+  if selected_band == 0 && movie_band_name == ""
+    alert "Please input a band name!"
+    return false
+
+  upload_file = $('#file_upload').val()
+  if upload_file == ""
+    alert "Please select an upload file!"
+    return false
+    
+  return true
+
+# ユーザー情報からmoogleアプリ投稿用のアクセストークンを取得
 get_app_access_token = (data, dataType) ->
   console.log data.data
   app_id = "253970248019703"
@@ -140,8 +168,8 @@ uploadProgress = (evt) ->
 # アップロードが完了した時の処理
 uploadComplete = (evt) ->
   console.log evt
-  $('#sync').empty()
   $('#movie_video').val(parseID(evt.target.responseText))
+  movie_uploading = false
   postForm()
 
 # アップロードに失敗した時の処理
@@ -155,16 +183,9 @@ uploadCanceled = (evt) ->
 # アプリへのPOST
 postForm = () ->
   $('#new_movie').submit()
-  console.log "finish submit"
 
 # ID取得
 parseID = (jsData) ->
   data = eval("("+jsData+")")
   data.id
-
-# UUID作成
-uuid = () ->
-  S4 = () ->
-    (((1+Math.random())*0x10000)|0).toString(16).substring(1)
-  (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4())
 

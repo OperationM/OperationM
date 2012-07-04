@@ -1,14 +1,5 @@
 <% unless @movie.comments.empty? %>
-  <%= content_tag(:div, :id => 'movie-comments', :class => 'commentBlock') do %>
-    <%= content_tag :ul, :class => 'commentList unstyled' do %>
-      <% if @movie.comments.size > 10 %>
-        <%= content_tag :li, :class => 'commentViewAll' do %>
-          <%= link_to "View all #{@movie.comments.size} comments", { :controller => 'comments',  :action => 'show_all_comments', :movie_id => @movie.id }, :method => 'post', :remote => true %>
-        <% end %>
-      <% end %>
-      <%= content_tag :div, :id => 'commentItemRenderArea' do %>
-        <%= render :partial => 'comments/comment_item', :collection => @movie.comments.take(10).reverse %>
-      <% end %>
-    <% end %>
+  <%= content_tag :ul, :id => 'commentList', :class => 'unstyled' do %>
+    <%= render :partial => 'comments/comment_item', :collection => @movie.comments %>
   <% end %>
 <% end %>

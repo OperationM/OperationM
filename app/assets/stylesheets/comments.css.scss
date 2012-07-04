@@ -1,47 +1,65 @@
 // Place all the styles related to the Comments controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-.commentArea
-{
-  margin-top: 70px;
-}
 
-.commentBlock
-{
-}
-
-.commentList
-{
-  margin-top: 1px;
-}
-
-.commentItemBlock
-{
-  display: block;
-}
-
-.commentItemBlock_Image
-{
+.userIcon{
+  width: 50px;
+  height: 50px;
   float: left;
 }
-
-.commentItemBlock_x
-{
-  float: right;
-}
-
-.userName
-{
-  font: {
-    weight: bold;
+.commentBody{
+  width: 300px;
+  float: left;
+  .commentInfo{
+    width: 300px;
+    float: left;
+    .userName{
+      width: 150px;
+      float: left;
+    }
+    .timeStamp{
+      margin-left: 5px;
+      float: left;
+      width: 130px;
+      text-align: right;
+      font-size: 0.8em;
+    }
+    .delete{
+      float: right;
+    }
+    :after{
+      clear: both;
+    }
+  }
+  .commentContent{
+    float: left;
+    color: gray;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    width: 300px;
+    height: auto;
+    margin-bottom: 10px;
   }
 }
-
-.commentInfoBlock
-{
-  display: block;
-  color: gray;
-  font: {
-    size: 9;
+#commentList{
+  height: 280px;
+  overflow: auto;
+}
+.comment-post{
+  float: right;
+}
+.comment-area{
+  resize: vertical;
+}
+#comment_comment{
+  width: 350px;  
+}
+#commentRenderArea {
+  :after{
+    content: ".";
+    display: block;
+    clear: both;
+    height: 0;
+    visibility: hidden;
   }
 }

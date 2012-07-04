@@ -11,6 +11,8 @@ MoogleApp::Application.routes.draw do
   match '/home', to: 'static_pages#home'
   match '/about', to: 'static_pages#about'
   match '/help', to: 'static_pages#help'
+  match '/privacy', to: 'static_pages#privacy'
+  match '/policies', to: 'static_pages#policies'
 
   root to: 'static_pages#home'
 

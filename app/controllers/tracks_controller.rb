@@ -6,7 +6,7 @@ class TracksController < ApplicationController
   # 曲に関連づいている動画を返す
   def show
     @track = Track.find(params[:id])
-    @movies = @track.movies
+    @movies = @track.movies.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

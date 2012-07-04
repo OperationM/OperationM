@@ -1,7 +1,7 @@
 class ConcertsController < ApplicationController
   def show
     @concert = Concert.find(params[:id])
-    @movies = @concert.movies
+    @movies = @concert.movies.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

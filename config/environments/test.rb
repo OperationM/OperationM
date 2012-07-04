@@ -36,4 +36,7 @@ MoogleApp::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  # TimeZone
+  config.time_zone = 'Tokyo'
 end

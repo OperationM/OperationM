@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   helper_method :admin?
   helper_method :member?
   helper_method :hq_src
+  helper_method :sec2strtime
 
   private
   # ログインユーザーを返す
@@ -91,7 +92,7 @@ class ApplicationController < ActionController::Base
           mov.meta = info["data"][0]["src"]
           mov.picture = info["data"][0]["thumbnail_link"]
           mov.source = info["data"][0]["src_hq"]
-          mov.length = sec2strtime(info["data"][0]["length"])
+          mov.length = info["data"][0]["length"]
           mov.save
         end
       end
@@ -108,10 +109,10 @@ class ApplicationController < ActionController::Base
   end
 
   def sec2strtime(msec)
-    sec_work = msec.to_f.ceil.to_i
+    sec_work = msec.to_f.truncate.to_i
     min = sec_work / 60
     sec = sec_work % 60
     hour = sec_work / 3600
-    strtime = "%2d:%2d:%2d"%([hour,sec,min])
+    strtime = "%02d:%02d"%([min,sec])
   end
 end

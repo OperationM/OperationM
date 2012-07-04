@@ -16,7 +16,7 @@ class TagsController < ApplicationController
   # tagに関連付いている動画を返す
   def show
     @tag = Tag.find(params[:id])
-    @movies = @tag.movies
+    @movies = @tag.movies.page(params[:page])
 
     respond_to do |format|
       format.html # show.html.erb

@@ -5,11 +5,13 @@ class CommentsController < ApplicationController
     @comment = Comment.create(params[:comment])
     @comment.omniuser = current_user
     @comment.movie = @movie
-    @comment.save
 
     respond_to do |format|
-      format.html { redirect_to movie_path(@movie) }
-      format.js
+      if @comment.save
+        format.html { redirect_to movie_path(@movie) }
+        format.js
+      end
+      
     end
 
   end

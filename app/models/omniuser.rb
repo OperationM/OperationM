@@ -10,6 +10,7 @@ class Omniuser < ActiveRecord::Base
       user.access_token = auth["credentials"]["token"]
       user.admin = admin_group(auth)
       user.member = member_group(auth)
+      user.picture = auth["info"]["image"]
     end
   end
 
@@ -34,25 +35,17 @@ class Omniuser < ActiveRecord::Base
   	self.member
   end
 
-  # 管理グループに属しているかチェック
+  # Moogleアプリの管理者かチェック
   def self.admin_group(auth)
-  	# g = groups(auth)
     g = owner(auth)
   	unless g.blank?
 	  	g.each do |h|
-        # if h.has_value?("387659801250930")
-        #   reuturn true
-        # end
-        if h.has_value?(auth["uid"])
-          if h["administrator"]          
-            return true
-          else
-            return false
-          end
+        if h.has_value?("253970248019703")
+          return true
         end
 	  	end
 	  end
-  	false
+  	return false
   end
 
   # ミューソグループに属しているかチェック
@@ -65,7 +58,7 @@ class Omniuser < ActiveRecord::Base
 	  		end
 	  	end
 	  end
-  	false
+  	return false
   end
 
   # ユーザーが属しているグループリストをHashで返却
@@ -90,7 +83,7 @@ class Omniuser < ActiveRecord::Base
 	  g['data']
   end
 
-  # ミューソグループのメンバーをHashで返却
+  # ユーザーが編集可能なアプリ一覧を返す
   def self.owner(auth)
     # HTTPSリクエスト用のオブジェクト用意
     require 'net/https'
@@ -104,7 +97,7 @@ class Omniuser < ActiveRecord::Base
     g = {}
     https.start do |w|
       if auth.has_key?('credentials')
-        response = w.get("/387659801250930/members&access_token=#{auth['credentials']['token']}")
+        response = w.get("/me/accounts?access_token=#{auth['credentials']['token']}")
         logger.debug "resonse: #{response}"
         g = JSON.parse(response.body)
       end

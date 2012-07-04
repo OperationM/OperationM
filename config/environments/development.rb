@@ -27,4 +27,7 @@ MoogleApp::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # TimeZone
+  config.time_zone = 'Tokyo'
 end
